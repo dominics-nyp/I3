@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card-content>
+
+
+
+
+    <ion-list>
+
+      <ion-item>
+        <ion-label>Eggs</ion-label>
+        <ion-checkbox [(ngModel)]="eggs"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Diary</ion-label>
+        <ion-checkbox [(ngModel)]="diary"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Peanuts</ion-label>
+        <ion-checkbox [(ngModel)]="peanuts"></ion-checkbox>
+      </ion-item>
+
+    </ion-list>
+
+    <button ion-button full (click)="goCam()" >
+      Next
+    </button>
+
+
+  </ion-card-content>
+
+
+</ion-content>

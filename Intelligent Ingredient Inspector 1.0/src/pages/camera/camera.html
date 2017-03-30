@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Camera
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card-content>
+   <!-- <div class="footer" >
+      <a *ngIf="!loading" href="#" class="footer__button" (click)="scanning.length > 0 ? newTranslation() : takePicture()">
+        <i class="material-icons">{{scanning.length > 0 ? 'clear' : 'remove_red_eye'}}</i>
+      </a>
+      <a *ngIf="loading" href="#" class="footer__button footer__button&#45;&#45;loading">
+        <i class="material-icons">loop</i>
+      </a>
+    </div>
+
+    &lt;!&ndash; background video - photo &ndash;&gt;
+    <div class="bg" [class.bg&#45;&#45;blur]="scanning.length > 0">
+      <img src="" id="snap">
+      <video id="video"></video>
+      <canvas id="canvas"></canvas>
+    </div>-->
+    <button (click)="takePicture()">Take a Picture</button>
+    <img [src]="base64Image" *ngIf="base64Image" />
+
+
+    <div class="results">
+      <div *ngFor="let label of labels">
+
+        <h2>{{label.description}}</h2>
+      </div>
+    </div>
+
+
+
+
+  </ion-card-content>
+</ion-content>
