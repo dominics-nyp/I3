@@ -3,7 +3,7 @@ import { NavController , AlertController} from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth-provider';
 import {AngularFire,FirebaseListObservable} from 'angularfire2';
 import{ SigninPage } from'../signin/signin';
-
+import {CameraPage} from '../camera/camera'
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -37,6 +37,14 @@ export class HomePage {
         {
           text:"Save Profile",
           handler: data => {
+
+            /*            firebase.auth().onAuthStateChanged(function(user) {
+             if (user) {
+             userID = user.uid;
+             console.log(userID); // this prints fine
+             }
+             })*/
+
             this.user.push({
               name: data.name,
               allergies:data.allergies
@@ -48,6 +56,46 @@ export class HomePage {
 
     prompt.present();
   }
+  /* editProfile(user)
+   let alert = this.ac.create();
+   alert.setTitle('What Allergies do you have?');
+
+   alert.addInput({
+   type:'checkbox',
+   label:'Milk',
+   value:'Milk',
+   });
+
+   alert.addInput({
+   type:'checkbox',
+   label:'Eggs',
+   value:'Egg',
+   });
+
+   alert.addInput({
+   type:'checkbox',
+   label:'Peanuts',
+   value:'peanut',
+   });
+
+   alert.addInput({
+   type:'checkbox',
+   label:'Tree nuts',
+   value:'tnuts',
+   });
+
+   alert.addInput({
+   type:'checkbox',
+   label:'Soy',
+   value:'soy',
+   });
+
+   alert.addButton('Cancel');
+   alert.addButton({
+   text: 'Save',
+   handler: data =>{
+   let newAllergies:String = user.allergies;
+   alert.present();*/
   editProfile(user):void{
     let prompt = this.ac.create({
       title:'Edit profile',
@@ -118,5 +166,7 @@ export class HomePage {
     this.auth.logout();
     this.navCtrl.setRoot(SigninPage);
   }
+  camera():void{
+    this.navCtrl.setRoot(CameraPage);
+  }
 }
-
