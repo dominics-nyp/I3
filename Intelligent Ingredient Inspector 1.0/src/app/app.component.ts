@@ -4,7 +4,7 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 import { TabsPage } from '../pages/tabs/tabs';
 import {CameraService} from '../providers/camera-service';
 import {TestService} from "../providers/testing-service";
-
+import { SigninPage} from '../pages/signin/signin';
 
 @Component({
   templateUrl: 'app.html',
@@ -12,7 +12,7 @@ import {TestService} from "../providers/testing-service";
   providers:[TestService]
 })
 export class MyApp {
-  rootPage = TabsPage;
+  rootPage = SigninPage;
 
   constructor(platform: Platform) {
     platform.ready().then(() => {

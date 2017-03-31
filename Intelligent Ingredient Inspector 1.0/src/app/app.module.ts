@@ -6,6 +6,22 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import {SafePage} from '../pages/safe/safe';
+import { SignupPage } from '../pages/signup/signup';
+import { ResetPasswordPage } from '../pages/reset-password/reset-password';
+import { SigninPage } from '../pages/signin/signin';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { AngularFireModule } from 'angularfire2';
+import { AuthProvider} from '../providers/auth-provider';
+
+
+export const firebaseConfig={
+  apiKey: "AIzaSyCbC1pjcS2mcAi5SXRchAn92wyfHvmnIlI",
+  authDomain: "intelligentingredientins-ce9a1.firebaseapp.com",
+  databaseURL: "https://intelligentingredientins-ce9a1.firebaseio.com",
+  storageBucket: "intelligentingredientins-ce9a1.appspot.com",
+  messagingSenderId: "355998361503"
+};
 
 @NgModule({
   declarations: [
@@ -14,10 +30,14 @@ import {SafePage} from '../pages/safe/safe';
     ContactPage,
     HomePage,
     TabsPage,
-    SafePage
+    SafePage,
+    SignupPage,
+    ResetPasswordPage,
+    SigninPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -26,8 +46,13 @@ import {SafePage} from '../pages/safe/safe';
     ContactPage,
     HomePage,
     TabsPage,
-    SafePage
+    SafePage,
+    SignupPage,
+    ResetPasswordPage,
+    SigninPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthProvider
+  ]
 })
 export class AppModule {}

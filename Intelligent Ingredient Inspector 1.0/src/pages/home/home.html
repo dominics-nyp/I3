@@ -1,40 +1,42 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>
+      Allergies List
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addProfile()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
+
 <ion-content padding>
-  <ion-card-content>
-
-
-
-
-    <ion-list>
-
+  <h2>Allergies</h2>
+  <ion-row>
+    <ion-item>
+      <div *ngIf="auth.authState">current user is {{auth.currentUser}}</div>
+    </ion-item>
+  </ion-row>
+  <ion-list>
+    <ion-item-sliding *ngFor="let user of user | async">
       <ion-item>
-        <ion-label>Eggs</ion-label>
-        <ion-checkbox [(ngModel)]="eggs"></ion-checkbox>
+        <p>Name: {{user.name}}</p>
+        <p>Allergies: {{user.allergies}}</p>
       </ion-item>
+      <ion-item-options side="right">
+        <button ion-button color="secondary" (click)="editProfile(user)"></button>
+        <ion-icon name="md-create">Edit</ion-icon>
+      </ion-item-options>
 
-      <ion-item>
-        <ion-label>Diary</ion-label>
-        <ion-checkbox [(ngModel)]="diary"></ion-checkbox>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Peanuts</ion-label>
-        <ion-checkbox [(ngModel)]="peanuts"></ion-checkbox>
-      </ion-item>
-
-    </ion-list>
-
-    <button ion-button full (click)="goCam()" >
-      Next
-    </button>
-
-
-  </ion-card-content>
-
-
+      <ion-item-options side="left">
+        <button ion-button color="danger" (click)="deleteProfile(user.$key)"></button>
+        <ion-icon name="md-trash">Delete</ion-icon>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-row>
+    <button (click)="logout()" ion-button block>Log out</button>
+  </ion-row>
 </ion-content>
