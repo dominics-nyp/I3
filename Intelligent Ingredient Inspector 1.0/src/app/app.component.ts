@@ -9,10 +9,11 @@ import { SigninPage} from '../pages/signin/signin';
 @Component({
   templateUrl: 'app.html',
   //providers:[CameraService],
-  providers:[TestService]
+  providers:[CameraService,TestService]
 })
 export class MyApp {
   rootPage = SigninPage;
+  //rootPage = TabsPage;
 
   constructor(platform: Platform) {
     platform.ready().then(() => {
