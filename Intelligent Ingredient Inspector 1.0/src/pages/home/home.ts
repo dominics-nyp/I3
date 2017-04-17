@@ -3,7 +3,7 @@ import { NavController , AlertController, ModalController} from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth-provider';
 import {AngularFire,FirebaseListObservable} from 'angularfire2';
 import{ SigninPage } from'../signin/signin';
-import {CameraPage} from '../camera/camera'
+import {CameraPage} from '../camera/camera';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'

@@ -1,8 +1,15 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Camera
-    </ion-title>
+
+    <ion-navbar color="primary">
+    <ion-buttons>
+      <button ion-button icon-only (click)="backToHome()">
+        <ion-icon name="arrow-back"></ion-icon>
+
+        <ion-title>
+          Camera
+        </ion-title>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -11,7 +18,7 @@
   <ion-card-content>
 
 
-    <button ion-button block outline (click)="addPhoto()">Take A Picture</button>
+    <button ion-button block (click)="addPhoto()">Take A Picture</button>
 
     <div class="results">
       <div *ngFor="let label of labels">
@@ -19,6 +26,8 @@
         <h2>{{label.description}}</h2>
       </div>
     </div>
+
+    <button (click)="showFlow()" ion-button block>Next</button>
 
   </ion-card-content>
 </ion-content>

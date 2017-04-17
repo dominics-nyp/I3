@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController} from 'ionic-angular';
 import {NavParams} from 'ionic-angular';
+import {CameraPage} from '../camera/camera';
 import {CameraService} from '../../providers/camera-service';
 //import {Camera} from '../pages/camera/camera';
 
@@ -21,6 +22,9 @@ export class SafePage {
   displayBasePic(){
     //this.cameraService.displayPicture();
     //this.cameraService.base64Image;
+  }
+  backToCamera(){
+    this.navCtrl.setRoot(CameraPage);
   }
 
   ionViewDidLoad() {

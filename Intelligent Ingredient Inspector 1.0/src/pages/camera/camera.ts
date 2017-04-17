@@ -7,6 +7,7 @@ import {SafePage} from '../safe/safe';
 import {TestService} from '../../providers/testing-service';
 import Cropper from 'cropperjs';
 import {CameraService} from "../../providers/camera-service";
+import {HomePage} from "../home/home";
 
 
 
@@ -34,7 +35,7 @@ export class CameraPage {
   labels: Array<any> = [];
 
   //translation
-
+  //allergy:string = "butter";
   scanning: Array<any> = [];
   choseLang: boolean = false;
   loading: boolean = false;
@@ -61,6 +62,7 @@ export class CameraPage {
           this.imageConvert = this.image.replace(/^data:image\/[a-z]+;base64,/, "");
           //console.log(this.image);
           this.getVision(this.imageConvert);
+          //this.matchText();
 
           //this.getVision(btoa(this.image));
           //console.log(this.image);
@@ -98,6 +100,19 @@ export class CameraPage {
 
   }
 
+ /* matchText(){
+ console.log('code reach here');
+ //for(var i = 0, )
+ let newLabel = this.labels.shift();
+ var i:number;
+ for(var i = 0; i<newLabel.length; i++){
+ if(this.allergy == newLabel[i]){
+ console.log('match');
+ {break}
+ }
+ }
+ }*/
+
   getText() {
 
     this.labels.forEach((label) => {
@@ -108,6 +123,13 @@ export class CameraPage {
 
     });
 
+  }
+
+  backToHome():void{
+    this.navCtrl.setRoot(HomePage);
+  }
+  showFlow():void{
+    this.navCtrl.setRoot(SafePage);
   }
 
 }
