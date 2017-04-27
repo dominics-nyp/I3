@@ -142,24 +142,19 @@ export class CameraPage {
 
        //console.log(ingredients[1]);
       for(var j = 0; j<ingredientList.length; j++){
-        if(ingredientList[j] === ""){
+        if(ingredientList[j] === ""){     //check for empty string inside array and remove accrodingly
           console.log('Empty element');
           ingredientList = ingredientList.filter(function (ingredients) {
 
           });
-          //ingredientUpdatedList.push(ingredientList[j]);
 
         }
-        /*  console.log(ingredientList[j]);
-         if(ingredientList[j].match(/OIL+/igm)){
 
-         this.counter++
-         console.log('Match');
-
-         }*/
-
+        let allergy:string = "OIL";
+        var regexp = new RegExp(allergy,"igm");
         console.log(ingredientList[j]);
-        if(ingredientList[j].match(/OIL+/igm)){
+        if(ingredientList[j].match(regexp)){
+        //if(ingredientList[j].match(regexp)){
           this.counter++;
           console.log('Match');
         }
