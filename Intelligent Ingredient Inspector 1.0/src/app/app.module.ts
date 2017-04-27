@@ -14,6 +14,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireModule } from 'angularfire2';
 import { AuthProvider} from '../providers/auth-provider';
 import {ScannerPage} from '../pages/scanner/scanner';
+import {UnSafePage} from "../pages/un-safe/un-safe";
 
 
 export const firebaseConfig={
@@ -35,7 +36,8 @@ export const firebaseConfig={
     SignupPage,
     ResetPasswordPage,
     SigninPage,
-    ScannerPage
+    ScannerPage,
+    UnSafePage,
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -54,7 +56,8 @@ export const firebaseConfig={
     SignupPage,
     ResetPasswordPage,
     SigninPage,
-    ScannerPage
+    ScannerPage,
+    UnSafePage,
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider

@@ -38,6 +38,7 @@
     "rxjs": "5.0.1",
     "sw-toolbox": "3.4.0",
     "tslint": "^4.5.1",
+    "typescript.list": "^6.7.0",
     "vision-cloud-api": "^1.0.1",
     "zone.js": "0.7.2"
   },

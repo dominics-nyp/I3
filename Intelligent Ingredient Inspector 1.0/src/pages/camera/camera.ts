@@ -8,7 +8,7 @@ import {TestService} from '../../providers/testing-service';
 import Cropper from 'cropperjs';
 import {CameraService} from "../../providers/camera-service";
 import {HomePage} from "../home/home";
-
+import {UnSafePage} from '../un-safe/un-safe';
 
 
 @Component({
@@ -31,11 +31,12 @@ export class CameraPage {
   quality:number = 90;
   picture:string;
   public imageConvert: string;
-
+  newLabel:Array<any> = [];
   labels: Array<any> = [];
+  public counter:number = 0;
 
   //translation
-  //allergy:string = "butter";
+  allergy:string = "butter";
   scanning: Array<any> = [];
   choseLang: boolean = false;
   loading: boolean = false;
@@ -89,10 +90,10 @@ export class CameraPage {
       .subscribe((sub) => {
 
         this.labels = sub.responses[0].textAnnotations;
-
-
+        //console.log(this.labels[0]);
         //this.getText();
-
+        this.matchText(this.labels[0]);
+        //this.testingText();
       });
 
 
@@ -100,26 +101,118 @@ export class CameraPage {
 
   }
 
- /* matchText(){
- console.log('code reach here');
- //for(var i = 0, )
- let newLabel = this.labels.shift();
- var i:number;
- for(var i = 0; i<newLabel.length; i++){
- if(this.allergy == newLabel[i]){
- console.log('match');
- {break}
- }
- }
- }*/
+
+ matchText(array){
+    //var count = 0;
+
+    for(var i = 0; i < 1; i++) {
+
+      console.log('code reach here 1');
+       var label = this.labels[i];
+       //console.log(label.description.toString().split(','));
+       //var ingredients = label.description.toString().split([',','(',')']); //tokenizers
+      //var ingredients = label.description.toString().split([',','(',')',' ']);
+
+      var ingredients = label.description.toString().split(/[(,)]/igm).map(function (ingredients){return ingredients.trim()}, {
+
+      });
+
+      //var ingredientsLatest = ingredients.trim();
+
+
+
+      //ingredients.forEach(t => console.log(`${t} \n`))
+
+
+
+       let ingredientList:string[] = ingredients;
+       let ingredientUpdatedList:string[];
+       //ingredientList.push(ingredients);
+        //console.log('list',ingredientList);
+        //console.log(ingredientList.length);
+        //console.log('code reach here 2');
+      for(var k = 0; k<ingredientList.length; k++){
+        if(ingredientList[k] === ""){
+          ingredientList = ingredientList.filter((ingredientList) =>{
+            return ingredientList.trim() != '';
+          });
+        }
+      }
+
+
+       //console.log(ingredients[1]);
+      for(var j = 0; j<ingredientList.length; j++){
+        if(ingredientList[j] === ""){
+          console.log('Empty element');
+          ingredientList = ingredientList.filter(function (ingredients) {
+
+          });
+          //ingredientUpdatedList.push(ingredientList[j]);
+
+        }
+        /*  console.log(ingredientList[j]);
+         if(ingredientList[j].match(/OIL+/igm)){
+
+         this.counter++
+         console.log('Match');
+
+         }*/
+
+        console.log(ingredientList[j]);
+        if(ingredientList[j].match(/OIL+/igm)){
+          this.counter++;
+          console.log('Match');
+        }
+        else{
+          console.log('No Match');
+
+        }
+
+      }
+
+      if(this.counter >0){
+        //this.counter = 0;
+        this.navCtrl.push(UnSafePage);
+
+
+
+      }
+      else{
+        this.navCtrl.push(SafePage);
+      }
+
+
+    }
+  }
 
   getText() {
 
+    var keepLooping = true;
     this.labels.forEach((label) => {
-      let translation = {search: label.description, result: ''};
-      //console.log(label.description);
+      //console.log(label[label.length-1]);
+      //console.log(this.labels[this.labels.length-1]);
+      //let translation = {search: label.description, result: ''};
+      if(keepLooping) {
+        if (label.description == 'MILK') {
+          console.log('match');
+          keepLooping = false;
+          this.navCtrl.push(UnSafePage);
+        }
+      }
 
-      console.log(label.description);
+
+        /*else if(this.labels[this.labels.length-1] && label.description != 'MILK') {
+          console.log('no match');
+          //keepLooping = false;
+          this.navCtrl.push(SafePage);
+        }*/
+        else{
+          console.log('no match');
+      }
+
+      //console.log(label.description);
+      //console.log(label[0]);
+      //console.log(label.description);
 
     });
 
@@ -130,6 +223,13 @@ export class CameraPage {
   }
   showFlow():void{
     this.navCtrl.setRoot(SafePage);
+  }
+  ionViewDidLoad() {
+    this.counter = 0;
+    console.log(this.counter);
+  }
+  ionViewDidEnter(){
+   this.counter = 0;
   }
 
 }
