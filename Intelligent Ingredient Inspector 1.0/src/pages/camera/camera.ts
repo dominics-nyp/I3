@@ -65,8 +65,7 @@ export class CameraPage {
           this.getVision(this.imageConvert);
           //this.matchText();
 
-          //this.getVision(btoa(this.image));
-          //console.log(this.image);
+
         },(error) => {
           // Toast errot and return DEFAULT_PHOTO from Constants
           this.toast(error);
@@ -140,27 +139,23 @@ export class CameraPage {
       }
 
 
-       //console.log(ingredients[1]);
       for(var j = 0; j<ingredientList.length; j++){
-        if(ingredientList[j] === ""){     //check for empty string inside array and remove accrodingly
-          console.log('Empty element');
-          ingredientList = ingredientList.filter(function (ingredients) {
+        //let allergy:string = "OIL";
+        let allergy:string[] = ["OIL","SUGAR"];
+        for(var e = 0; e<allergy.length; e++) {
+          var regexp = new RegExp(allergy[e], "igm");
 
-          });
+          console.log(ingredientList[j]);
+          //if (ingredientList[j].match(regexp)) {
 
-        }
+            if(ingredientList[j].match(regexp)){
+            this.counter++;
+            console.log('Match');
+          }
+          else {
+            console.log('No Match');
 
-        let allergy:string = "OIL";
-        var regexp = new RegExp(allergy,"igm");
-        console.log(ingredientList[j]);
-        if(ingredientList[j].match(regexp)){
-        //if(ingredientList[j].match(regexp)){
-          this.counter++;
-          console.log('Match');
-        }
-        else{
-          console.log('No Match');
-
+          }
         }
 
       }
