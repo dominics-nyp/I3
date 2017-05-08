@@ -9,6 +9,8 @@ import Cropper from 'cropperjs';
 import {CameraService} from "../../providers/camera-service";
 import {HomePage} from "../home/home";
 import {UnSafePage} from '../un-safe/un-safe';
+import firebase from 'firebase';
+import {AngularFire,FirebaseListObservable} from 'angularfire2';
 
 
 @Component({
@@ -34,22 +36,67 @@ export class CameraPage {
   newLabel:Array<any> = [];
   labels: Array<any> = [];
   public counter:number = 0;
+  warningResult:Array<string> = [];
+
+
+  //userAllergy: any;
 
   //translation
   allergy:string = "butter";
   scanning: Array<any> = [];
   choseLang: boolean = false;
   loading: boolean = false;
+  allergyRef:any;
+  allergyList:any;
+  loadedAllergyList:any;
+
+  userAllergy: FirebaseListObservable<any>;
 
 
   //results: Array<any> = [];
   //text: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public testService: TestService,public cameraService: CameraService,public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public testService: TestService,public cameraService: CameraService,public toastCtrl: ToastController,public af : AngularFire) {
     //this.imageBase64 = this.navParams.get("imageBase64");
     //this.width = this.navParams.get("width");
     //this.height = this.navParams.get("height");
+    //this.userAllergy = af.database.list('/intelligentingredientins-ce9a1');
+    //this.allergyRef = af.database.list('/ingredientDB');
+    //this.allergyRef = firebase.database().ref('/ingredientDB');
+
+   /* this.allergyRef.on('value',allergyList =>{
+        let allergyUser = [];
+        allergyList.forEach(user =>{
+          //allergyUser.push(allergyUser.val());
+          allergyUser.push(user.val());
+        });
+
+        this.allergyList = allergyUser;
+        this.loadedAllergyList = allergyUser;
+        console.log(allergyUser);
+    });*/
+
+
+    /*this.countryRef.on('value', countryList => {
+      let countries = [];
+      countryList.forEach( country => {
+        countries.push(country.val());
+      });
+
+      this.countryList = countries;
+      this.loadedCountryList = countries;
+    });*/
+
+   this.allergyRef = firebase.database().ref('/ingredientDB');
+
+   this.allergyRef.on('value', snapshot =>{
+     console.log(snapshot.val());
+     this.allergyList = snapshot.val();
+   })
+
+    //console.log('data',this.userAllergy);
 
   }
+
 
 
   addPhoto(){
@@ -58,7 +105,7 @@ export class CameraPage {
     this.cameraService.getImage(this.width,this.height,this.quality)
       .subscribe( (data) => {
           this.image = (data);
-          //console.log(btoa(this.image));
+
           //this.image = this.image.replace(/^data:image\/[a-z]+;base64,/, "");
           this.imageConvert = this.image.replace(/^data:image\/[a-z]+;base64,/, "");
           //console.log(this.image);
@@ -92,34 +139,38 @@ export class CameraPage {
         //console.log(this.labels[0]);
         //this.getText();
         this.matchText(this.labels[0]);
+
         //this.testingText();
       });
-
-
-
 
   }
 
 
  matchText(array){
     //var count = 0;
+    //this.loadedAllergy = this.userAllergy;
+    //console.log(this.loadedAllergy);
+   //console.log(JSON.stringify(this.userAllergy));
+   //console.log('database node',this.allergyList);
+   var warningResult = [];
+   var unSafeResult = [];
+   let allergy:string[] = ["SUGAR","OIL"];
 
     for(var i = 0; i < 1; i++) {
 
-      console.log('code reach here 1');
+      var dataArray = this.allergyList;
+      console.log('Data from firebase',dataArray);
+
        var label = this.labels[i];
        //console.log(label.description.toString().split(','));
        //var ingredients = label.description.toString().split([',','(',')']); //tokenizers
       //var ingredients = label.description.toString().split([',','(',')',' ']);
 
-      var ingredients = label.description.toString().split(/[(,)]/igm).map(function (ingredients){return ingredients.trim()}, {
+      var ingredients = label.description.toString().split(/[(,).]/igm).map(function (ingredients){return ingredients.trim()}, {
 
       });
 
       //var ingredientsLatest = ingredients.trim();
-
-
-
       //ingredients.forEach(t => console.log(`${t} \n`))
 
 
@@ -129,7 +180,7 @@ export class CameraPage {
        //ingredientList.push(ingredients);
         //console.log('list',ingredientList);
         //console.log(ingredientList.length);
-        //console.log('code reach here 2');
+
       for(var k = 0; k<ingredientList.length; k++){
         if(ingredientList[k] === ""){
           ingredientList = ingredientList.filter((ingredientList) =>{
@@ -141,29 +192,48 @@ export class CameraPage {
 
       for(var j = 0; j<ingredientList.length; j++){
         //let allergy:string = "OIL";
-        let allergy:string[] = ["OIL","SUGAR"];
+        //let allergy:string[] = ["OIL","SUGAR"];
+        //let safeResult:string[];
+        //let unSafeResult:string[];
+
+
         for(var e = 0; e<allergy.length; e++) {
           var regexp = new RegExp(allergy[e], "igm");
 
           console.log(ingredientList[j]);
-          //if (ingredientList[j].match(regexp)) {
+
+          if(ingredientList[j] === allergy[e]){
+
+           //unSafeResult[j] = ingredientList[j];
+           //console.log('unSafe',unSafeResult);
+            unSafeResult.push(ingredientList[j].valueOf());
+
+          }
 
             if(ingredientList[j].match(regexp)){
             this.counter++;
-            console.log('Match');
+
+              warningResult.push(ingredientList[j].valueOf());
+              console.log('Match');
+            //console.log('Ingredients that matched',unSafeResult);
           }
+
           else {
             console.log('No Match');
 
+
           }
+
         }
 
       }
 
+      console.log('warning', warningResult);
+
       if(this.counter >0){
         //this.counter = 0;
-        this.navCtrl.push(UnSafePage);
-
+        this.navCtrl.push(UnSafePage,{unSafeResult,warningResult});
+          //this.navCtrl.push(UnSafePage);
 
 
       }
@@ -173,7 +243,9 @@ export class CameraPage {
 
 
     }
+
   }
+
 
   getText() {
 
