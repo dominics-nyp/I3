@@ -13,6 +13,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireModule } from 'angularfire2';
 import { AuthProvider} from '../providers/auth-provider';
+import {ScannerPage} from '../pages/scanner/scanner';
+import {UnSafePage} from "../pages/un-safe/un-safe";
 
 
 export const firebaseConfig={
@@ -33,11 +35,15 @@ export const firebaseConfig={
     SafePage,
     SignupPage,
     ResetPasswordPage,
-    SigninPage
+    SigninPage,
+    ScannerPage,
+    UnSafePage,
   ],
   imports: [
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig)
+
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -49,7 +55,9 @@ export const firebaseConfig={
     SafePage,
     SignupPage,
     ResetPasswordPage,
-    SigninPage
+    SigninPage,
+    ScannerPage,
+    UnSafePage,
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider

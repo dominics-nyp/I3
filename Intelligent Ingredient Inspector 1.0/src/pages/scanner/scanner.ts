@@ -1,44 +1,82 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
 
+import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import {TestService} from '../../providers/testing-service';
+import {CameraService} from "../../providers/camera-service";
+import Cropper from 'cropperjs';
 /*
-  Generated class for the Scanner page.
+ Generated class for the Scanner page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+ See http://ionicframework.com/docs/v2/components/#navigation for more info on
+ Ionic pages and navigation.
+ */
 @Component({
   selector: 'page-scanner',
   templateUrl: 'scanner.html'
 })
 export class ScannerPage {
 
-  apiKeys = {
-    cloudVision :'AIzaSyA4aIM1cmVijRq9EwTpvj81bJ6lGGdUcN0',
-    scanner:  'AIzaSyA4aIM1cmVijRq9EwTpvj81bJ6lGGdUcN0'
-  };
+  @ViewChild('image') input: ElementRef;
+  imageBase64: any;
+  width: number;
+  height: number;
+  cropper: Cropper;
+  croppedImgB64String: string;
+  // labels: Array<any> = [];
 
-  apiUrls = {
-    cloudVision : 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyA4aIM1cmVijRq9EwTpvj81bJ6lGGdUcN0',
-    //translate : 'https://www.googleapis.com/language/translate/v2?key=AIzaSyA4aIM1cmVijRq9EwTpvj81bJ6lGGdUcN0'
-  };
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams) {
+
+    this.imageBase64 = this.navParams.get("imageBase64");
+    this.width = this.navParams.get("width");
+    this.height = this.navParams.get("height");
+
+  }
 
 
-  visionPostObj = {
-    requests : [
-      {
-        image : {
-          content : ''
-        },
-        features: {
-          type: 'TEXT_DETECTION',
-          maxResults: 1
-        }
-      }
-    ]
-  };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  cropperLoad() {
+    //Set your required cropperJS options as seen here https://github.com/fengyuanchen/cropperjs/blob/master/README.md#options
+    this.cropper = new Cropper(this.input.nativeElement, {
+      dragMode: 'crop',
+      //aspectRatio: this.width / this.height,
+      aspectRatio: NaN,
+      modal: true,
+      guides: true,
+      highlight: true,
+      center: true,
+      background: false,
+      autoCrop: true,
+      movable: false,
+      zoomable: false,
+      autoCropArea: 0.5,
+      responsive: true,
+      cropBoxMovable: true,
+      cropBoxResizable: true,
+      scalable: false,
+
+
+      crop: (e: Cropper.CropperCustomEvent) => {}
+    });
+
+  }
+
+  cropperReset() { this.cropper.reset() }
+
+  imageRotate() { this.cropper.rotate(90); }
+
+  cancel() { this.viewCtrl.dismiss(); }
+
+  finish() {
+    this.croppedImgB64String = this.cropper.getCroppedCanvas({
+      width: this.width,
+      height: this.height
+    }).toDataURL('image/jpeg', (100 / 100));
+    this.viewCtrl.dismiss(this.croppedImgB64String);
+
+
+
+  }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ScannerPage');

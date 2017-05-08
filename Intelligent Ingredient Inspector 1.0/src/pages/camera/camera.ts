@@ -1,12 +1,14 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit,ViewChild,ElementRef } from '@angular/core';
 import {Camera} from 'ionic-native';
-import { NavController } from 'ionic-angular';
-import {NavParams} from 'ionic-angular';
+import { NavController, NavParams,ToastController } from 'ionic-angular';
+//import {NavParams} from 'ionic-angular';
 import {SafePage} from '../safe/safe';
 //import {CameraService} from '../../providers/camera-service';
 import {TestService} from '../../providers/testing-service';
-import { CropImageModal } from '../modals/crop-image/crop-image';
-
+import Cropper from 'cropperjs';
+import {CameraService} from "../../providers/camera-service";
+import {HomePage} from "../home/home";
+import {UnSafePage} from '../un-safe/un-safe';
 
 
 @Component({
@@ -14,14 +16,27 @@ import { CropImageModal } from '../modals/crop-image/crop-image';
   templateUrl: 'camera.html'
 })
 export class CameraPage {
+  /* @ViewChild('image') input: ElementRef;
+   imageBase64: any;
+   //public base64Image: string;
+   //public  base64Image: Array<bytes>
+   //image:any;
+   width: number;
+   height: number;
+   cropper: Cropper;*/
 
-  public base64Image: string;
-  //public  base64Image: Array<bytes>
-  //image:any;
-
-
+  public image:string;
+  width:number = 500;
+  height:number = 500;
+  quality:number = 90;
+  picture:string;
+  public imageConvert: string;
+  newLabel:Array<any> = [];
   labels: Array<any> = [];
+  public counter:number = 0;
+
   //translation
+  allergy:string = "butter";
   scanning: Array<any> = [];
   choseLang: boolean = false;
   loading: boolean = false;
@@ -29,163 +44,182 @@ export class CameraPage {
 
   //results: Array<any> = [];
   //text: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private testService: TestService) {
-
+  constructor(public navCtrl: NavController, public navParams: NavParams,public testService: TestService,public cameraService: CameraService,public toastCtrl: ToastController) {
+    //this.imageBase64 = this.navParams.get("imageBase64");
+    //this.width = this.navParams.get("width");
+    //this.height = this.navParams.get("height");
 
   }
 
-  takePicture() {
-    Camera.getPicture({
 
-      destinationType: Camera.DestinationType.DATA_URL,
-      targetWidth: 1000,
-      targetHeight: 1000
+  addPhoto(){
 
 
+    this.cameraService.getImage(this.width,this.height,this.quality)
+      .subscribe( (data) => {
+          this.image = (data);
+          //console.log(btoa(this.image));
+          //this.image = this.image.replace(/^data:image\/[a-z]+;base64,/, "");
+          this.imageConvert = this.image.replace(/^data:image\/[a-z]+;base64,/, "");
+          //console.log(this.image);
+          this.getVision(this.imageConvert);
+          //this.matchText();
 
-    }).then((imageData) => {
-      // imageData is a base64 encoded string
-      this.base64Image = "data:image/jpeg;base64," + imageData;
-      //this.detectText(imageData);
-      this.getVision(imageData);
-      //console.log(imageData);
 
-    }, (err) => {
-      console.log(err);
+        },(error) => {
+          // Toast errot and return DEFAULT_PHOTO from Constants
+          this.toast(error);
+        }
+      );
+  }
+
+  toast(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 2500,
+      showCloseButton: false
     });
+    toast.present();
   }
 
 
+  getVision(image64: string) {
 
-  /* newTranslation(){
-   this.scanning = this.labels = [];
-   let photo  : any = document.querySelector('#snap');
-   photo.setAttribute('src', '');
-   }*/
-
-
-  /*  takePicture(){
-   let canvas : any = document.querySelector('#canvas'),
-   video  : any = document.querySelector('#video'),
-   photo  : any = document.querySelector('#snap'),
-   width  : number = video.clientWidth,
-   height  : number = video.clientHeight;
-
-   canvas.width = width;
-   canvas.height = height;
-   canvas.getContext('2d').drawImage(video, 0, 0, width, height);
-
-   let image = canvas.toDataURL('image/jpeg', 1);
-   photo.setAttribute('src', image);
-
-   this.loading = true;
-   this.getVision( image.replace('data:image/jpeg;base64,', '') );
-   }*/
-
-  /*getTranslation(){
-   console.log('detect');
-   this.labels.forEach( (label) => {
-   let translation = {search : label.description, result : ''};
-
-   this.testService.getTranslation( label.description, this.selectedLanguage.code)
-   .subscribe( (sub) => {
-   translation.result= sub.data.translations[0].translatedText;
-   this.loading = false;
-   this.translations = [];
-   this.translations.push(translation);
-   });
-
-   })
-   }*/
-
-  getVision(base64image: string) {
-    this.testService.getVisionLabels(base64image)
+    this.testService.getVisionLabels(image64)
       .subscribe((sub) => {
 
         this.labels = sub.responses[0].textAnnotations;
+        //console.log(this.labels[0]);
+        //this.getText();
+        this.matchText(this.labels[0]);
+        //this.testingText();
+      });
 
-        this.getText();
-        //this.labels = sub.results[0];
-        //console.log('Text:');
-        //this.labels.forEach(())
-        //this.getTranslation();
+
+
+
+  }
+
+
+ matchText(array){
+    //var count = 0;
+
+    for(var i = 0; i < 1; i++) {
+
+      console.log('code reach here 1');
+       var label = this.labels[i];
+       //console.log(label.description.toString().split(','));
+       //var ingredients = label.description.toString().split([',','(',')']); //tokenizers
+      //var ingredients = label.description.toString().split([',','(',')',' ']);
+
+      var ingredients = label.description.toString().split(/[(,)]/igm).map(function (ingredients){return ingredients.trim()}, {
 
       });
+
+      //var ingredientsLatest = ingredients.trim();
+
+
+
+      //ingredients.forEach(t => console.log(`${t} \n`))
+
+
+
+       let ingredientList:string[] = ingredients;
+       let ingredientUpdatedList:string[];
+       //ingredientList.push(ingredients);
+        //console.log('list',ingredientList);
+        //console.log(ingredientList.length);
+        //console.log('code reach here 2');
+      for(var k = 0; k<ingredientList.length; k++){
+        if(ingredientList[k] === ""){
+          ingredientList = ingredientList.filter((ingredientList) =>{
+            return ingredientList.trim() != '';
+          });
+        }
+      }
+
+
+      for(var j = 0; j<ingredientList.length; j++){
+        //let allergy:string = "OIL";
+        let allergy:string[] = ["OIL","SUGAR"];
+        for(var e = 0; e<allergy.length; e++) {
+          var regexp = new RegExp(allergy[e], "igm");
+
+          console.log(ingredientList[j]);
+          //if (ingredientList[j].match(regexp)) {
+
+            if(ingredientList[j].match(regexp)){
+            this.counter++;
+            console.log('Match');
+          }
+          else {
+            console.log('No Match');
+
+          }
+        }
+
+      }
+
+      if(this.counter >0){
+        //this.counter = 0;
+        this.navCtrl.push(UnSafePage);
+
+
+
+      }
+      else{
+        this.navCtrl.push(SafePage);
+      }
+
+
+    }
   }
 
   getText() {
 
-    this.labels.forEach((label) => { //technically declare the label here via foreach
-      let translation = {search: label.description, result: ''};
+    var keepLooping = true;
+    this.labels.forEach((label) => {
+      //console.log(label[label.length-1]);
+      //console.log(this.labels[this.labels.length-1]);
+      //let translation = {search: label.description, result: ''};
+      if(keepLooping) {
+        if (label.description == 'MILK') {
+          console.log('match');
+          keepLooping = false;
+          this.navCtrl.push(UnSafePage);
+        }
+      }
+
+
+        /*else if(this.labels[this.labels.length-1] && label.description != 'MILK') {
+          console.log('no match');
+          //keepLooping = false;
+          this.navCtrl.push(SafePage);
+        }*/
+        else{
+          console.log('no match');
+      }
+
       //console.log(label.description);
-      console.log(label.description);
+      //console.log(label[0]);
+      //console.log(label.description);
+
     });
-    /*'use strict';
-
-     detectText(base64image: string){
-
-
-     const Vision = require('@google-cloud/vision');
-
-     const vision = new Vision();
-
-     vision.detectText(base64image)
-     .subscribe((results) => {
-     const detections = results[0];
-
-     console.log('Text:');
-     detections.forEach((text) => console.log(text));
-     });
-
-
-
-     }*/
-
-    /*ngOnInit() {
-     let video   : any = document.querySelector('#video'),
-     w       : any = window,
-     n       : any = navigator;
-
-     n.getMedia = ( n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia || n.msGetUserMedia);
-
-     n.getMedia(
-     {
-     video: true,
-     audio: false
-     },
-     function(stream) {
-     if(n.mozGetUserMedia){
-     video.mozSrcObject = stream;
-     }else{
-     var vendorURL = w.URL || w.webkitURL;
-     video.src = vendorURL.createObjectURL(stream);
-     }
-     video.play();
-     },
-     function(err) {
-     console.log("An error occured! " + err.message);
-     }
-     );
-     }*/
-
-    /*goPicture(){
-     this.cameraService.takePicture();
-
-
-     this.navCtrl.push(SafePage,{
-     //image:this.cameraService.cameraUrl
-     image:this.cameraService.base64Image,
-     });
-
-     }
-
-
-
-     ionViewWillEnter(){
-     this.goPicture();
-
-     }*/
-
 
   }
+
+  backToHome():void{
+    this.navCtrl.setRoot(HomePage);
+  }
+  showFlow():void{
+    this.navCtrl.setRoot(SafePage);
+  }
+  ionViewDidLoad() {
+    this.counter = 0;
+    console.log(this.counter);
+  }
+  ionViewDidEnter(){
+   this.counter = 0;
+  }
+
 }
