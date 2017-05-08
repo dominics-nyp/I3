@@ -5,7 +5,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import {CameraService} from '../providers/camera-service';
 import {TestService} from "../providers/testing-service";
 import { SigninPage} from '../pages/signin/signin';
-
+import {HomePage} from "../pages/home/home";
 @Component({
   templateUrl: 'app.html',
   //providers:[CameraService],

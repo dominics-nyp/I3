@@ -5,6 +5,7 @@ import { AuthProvider } from '../../providers/auth-provider';
 import {SignupPage} from '../signup/signup';
 import { HomePage} from '../home/home';
 import { ResetPasswordPage } from '../reset-password/reset-password';
+import {AngularFire} from "angularfire2";
 
 @Component({
   selector: 'page-signin',
@@ -21,7 +22,7 @@ export class SigninPage {
   homePage = HomePage;
 
 
-  constructor(public navCtrl: NavController, private fb: FormBuilder,public auth: AuthProvider) {
+  constructor(public navCtrl: NavController, private fb: FormBuilder,public auth: AuthProvider,public af: AngularFire) {
     this.loginForm = this.fb.group({
       'email': ['', Validators.compose([Validators.required, Validators.pattern(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)])],
       'password': ['', Validators.compose([Validators.required, Validators.minLength(1)])]
@@ -46,5 +47,15 @@ export class SigninPage {
       });
     }
   }
+  remember():void{
+    this.af.auth.subscribe(user => {
+      if (user) {
+        this.navCtrl.setRoot(HomePage);
+        console.log("11");
+      } else {
+        this.navCtrl.setRoot(SigninPage);
+      }
+    });
 
+  }
 }

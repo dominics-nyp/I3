@@ -3,6 +3,7 @@ import { NavController , AlertController, ModalController} from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth-provider';
 import {AngularFire,FirebaseListObservable} from 'angularfire2';
 import{ SigninPage } from'../signin/signin';
+import * as firebase from 'firebase';
 import {CameraPage} from '../camera/camera';
 @Component({
   selector: 'page-home',
@@ -11,7 +12,7 @@ import {CameraPage} from '../camera/camera';
 export class HomePage {
   user: FirebaseListObservable<any>;
   constructor(public navCtrl: NavController, af : AngularFire, public ac:AlertController,public auth : AuthProvider ,public mc:ModalController) {
-    this.user= af.database.list('/user');
+    this.user= af.database.list('/user/'+ firebase.auth().currentUser.uid+'/profile/');
   }
   addProfile():void{
     let prompt = this.ac.create({

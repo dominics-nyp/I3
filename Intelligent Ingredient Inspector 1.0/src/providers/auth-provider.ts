@@ -4,6 +4,8 @@
 import {Injectable, EventEmitter, Inject} from '@angular/core';
 import { AuthProviders, AngularFire, FirebaseAuthState, AuthMethods, FirebaseApp } from 'angularfire2'; //Add FirebaseApp
 import { Observable } from "rxjs/Observable";
+import { Component } from '@angular/core';
+import {root} from "rxjs/util/root";
 
 @Injectable()
 export class AuthProvider {
@@ -59,5 +61,8 @@ export class AuthProvider {
     return this.authState?this.authState.auth.email:'';
   }
 
+  get currentUID():string{
+    return this.authState?this.authState.auth.uid:'';
+  }
 
 }
