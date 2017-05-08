@@ -1,0 +1,80 @@
+<!--
+  Generated template for the UnSafe page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>unSafe</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<div id="tick">
+
+</div>
+  <!--<ion-list>
+    <ion-item *ngFor="let warnings of warning">{{warnings}}</ion-item>
+    <ion-icon name="warning" *ngFor="let warnings of warning">{{warnings}}</ion-icon>
+  </ion-list>-->
+  <!--<ion-card>
+    <ion-item>
+      <ion-avatar>
+        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+          <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+          <path class="checkmark__check" fill="none" d="M16 16 36 36 M36 16 16 36" />
+        </svg>
+      </ion-avatar>
+      <ion-item *ngFor="let warnings of warning">{{warnings}}</ion-item>
+    </ion-item>
+  </ion-card>-->
+
+  <ion-card *ngIf="resultUnsafe" style="background-color: red">
+
+    <!--<ion-item *ngFor="let warnings of warning">{{warnings}}
+     <ion-icon ios="ios-warning" md="md-warning" style="background-color: yellow"></ion-icon>-->
+   <!--</ion-item>-->
+
+    <!-- <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+        <path class="checkmark__check" fill="none" d="M16 16 36 36 M36 16 16 36" />
+      </svg>-->
+    <!--<svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+      <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+      <path class="checkmark__check" fill="none" d="M16 16 36 36 M36 16 16 36" />
+    </svg>-->
+    <div class="dangerCard" style="color:white">
+      Danger
+    </div>
+
+    <div class="unSafeText" style="color:white">The food is not safe to consume as it contains the following ingredient(s)</div>
+
+
+      <ion-item *ngFor="let unSafeResult of unSafe">{{unSafeResult}}</ion-item>
+
+
+
+ </ion-card>
+
+  <ion-card *ngIf="resultWarning" style="background-color: yellow">
+    <div class="warningCard">
+      Warning
+    </div>
+    <div class="warningText">The following ingredients are ambigious hence consume at your own risk</div>
+
+    <ion-item *ngFor="let warningResult of warning">{{warningResult}}</ion-item>
+
+  </ion-card>
+
+  <ion-card *ngIf="resultSafe" style="background-color: green">
+    <div class="safeCard"style="color: white">
+      Safe
+    </div>
+    <div class="safeText" style="color: white">The food is safe to consume.</div>
+  </ion-card>
+
+</ion-content>
