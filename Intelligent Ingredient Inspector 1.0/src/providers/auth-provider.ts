@@ -65,4 +65,6 @@ export class AuthProvider {
     return this.authState?this.authState.auth.uid:'';
   }
 
+
+
 }

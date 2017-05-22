@@ -12,7 +12,8 @@ import {CameraPage} from '../camera/camera';
 export class HomePage {
   user: FirebaseListObservable<any>;
   constructor(public navCtrl: NavController, af : AngularFire, public ac:AlertController,public auth : AuthProvider ,public mc:ModalController) {
-    this.user= af.database.list('/user/'+ firebase.auth().currentUser.uid+'/profile/');
+    this.user= af.database.list('/user/'+ firebase.auth().currentUser.uid+'/profile/'); //get list by UID?
+
   }
   addProfile():void{
     let prompt = this.ac.create({

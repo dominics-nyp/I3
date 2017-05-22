@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import {AngularFire,FirebaseListObservable} from 'angularfire2';
+import firebase from 'firebase';
+import { AuthProvider } from '../../providers/auth-provider'
 
 /*
   Generated class for the UnSafe page.
@@ -16,14 +19,58 @@ export class UnSafePage {
   index:number;
   warning:any;
   unSafe:any;
-  resultUnsafe:boolean = false;
-  resultWarning:boolean = false;
-  resultSafe:boolean = false;
+  displayUnsafe:boolean = true;
+  displayWarning:boolean = true;
+  displaySafe:boolean = true;
+  userProfile:Array<string> = [];
+  userProfileList:Array<any> = [];
+  //userDetailsList:Array<any> = [];
+  userDetailsList:any[];
+  user: FirebaseListObservable<any[]>;
+  shownGroup = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.breakArray();
-    this.resultCardDisplay();
+
+
+
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,public auth : AuthProvider,af : AngularFire) {
+    //this.breakArray();
+    //this.resultCardDisplay();
+    this.userDetailsList = this.navParams.get('userDetails');
+    console.log('resultPage',this.userDetailsList);
+
+
+    af.database.list('/user/'+ firebase.auth().currentUser.uid+'/profile/',{preserveSnapshot:true})
+      .subscribe(snapshots =>{
+        snapshots.forEach(snapshot => {
+          //console.log(snapshot.val().allergies);
+          //console.log(snapshot.val());
+          this.userProfile = snapshot.val().name;
+          this.userProfileList.push(this.userProfile);
+
+          //this.allergyUser = snapshot.val();
+          //this.allergyUser = JSON.parse(snapshot.val());
+          //this.allergyJson = JSON.parse(snapshot.val());
+          //this.allergean.push(this.allergyUser);
+          //console.log(this.allergean);
+          //console.log(this.allergy);
+        })
+        console.log(this.userProfileList);
+      });
+
   }
+  toggleGroup(group) {
+    if (this.isGroupShown(group)) {
+      this.shownGroup = null;
+    } else {
+      this.shownGroup = group;
+    }
+  };
+
+  isGroupShown(group) {
+    return this.shownGroup === group;
+  };
+
   breakArray(){
 
     this.warning = this.navParams.get("warningResult");
@@ -59,6 +106,7 @@ export class UnSafePage {
       }
     }
     console.log('unsafe',this.unSafe);
+    console.log('warning',this.warning);
     this.warning.sort();
     this.unSafe.sort();
 
@@ -66,20 +114,23 @@ export class UnSafePage {
     //console.log('new array',unSafe);
     //unSafe.splice(j,1);
     resultCardDisplay(){
-      if(this.unSafe != []){
-        this.resultUnsafe = true;
-      }
-      if(this.warning != []){
-        this.resultWarning = true;
-      }
-      if(this.warning == [] && this.unSafe == []){
-        this.resultSafe = true;
-      }
-      /*else if(this.unSafe == []){
-        this.resultUnsafe = false;
-      }*/
-
-
+        for(var i =0; i<this.userDetailsList.length; i++){
+          if(this.userDetailsList[i].resultUnSafe.length > 0){
+            this.displayUnsafe = false;
+          }
+          else if(this.userDetailsList[i].resultUnsafe.length == 0){
+            this.displayUnsafe = true;
+          }
+          else if(this.userDetailsList[i].resultWarning.length >0){
+            this.displayWarning = false;
+          }
+          else if(this.userDetailsList[i].resultWarning.length == 0){
+            this.displayWarning = true;
+          }
+          else{
+            this.displaySafe = true;
+          }
+        }
     }
 
 

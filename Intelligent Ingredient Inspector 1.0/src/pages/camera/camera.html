@@ -16,18 +16,26 @@
 <ion-content>
 
   <img src={{image}} *ngIf="image" />
+  <div class="noImg" [hidden]="imageExist">
+    <ion-icon name="images" style="font-size: 300px"></ion-icon>
+    <p>There is no image here</p>
+  </div>
 
 
   <ion-card-content>
 
 
-    <button ion-button block (click)="addPhoto()">Take A Picture</button>
+    <button ion-button block (click)="addPhoto()">Take
+
+
+  picture</button>
 
     <div class="results">
       <div *ngFor="let label of labels">
 
         <h2>{{label.description}}</h2>
       </div>
+
     </div>
 
     <button (click)="showFlow()" ion-button block>Next</button>
