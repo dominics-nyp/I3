@@ -5,6 +5,7 @@ import {AngularFire,FirebaseListObservable} from 'angularfire2';
 import{ SigninPage } from'../signin/signin';
 import * as firebase from 'firebase';
 import {CameraPage} from '../camera/camera';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'

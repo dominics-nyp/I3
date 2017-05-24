@@ -38,7 +38,7 @@ export class UnSafePage {
     //this.resultCardDisplay();
     this.userDetailsList = this.navParams.get('userDetails');
     console.log('resultPage',this.userDetailsList);
-
+    this.checkColor();
 
     af.database.list('/user/'+ firebase.auth().currentUser.uid+'/profile/',{preserveSnapshot:true})
       .subscribe(snapshots =>{
@@ -115,19 +115,19 @@ export class UnSafePage {
     //unSafe.splice(j,1);
     resultCardDisplay(){
         for(var i =0; i<this.userDetailsList.length; i++){
-          if(this.userDetailsList[i].resultUnSafe.length > 0){
-            this.displayUnsafe = false;
-          }
-          else if(this.userDetailsList[i].resultUnsafe.length == 0){
+          if(this.userDetailsList[i].resultUnSafe.length > 0 && this.userDetailsList[i].resultWarning < 1){ //if only unsafe exist
             this.displayUnsafe = true;
           }
-          else if(this.userDetailsList[i].resultWarning.length >0){
-            this.displayWarning = false;
+          else if(this.userDetailsList[i].resultUnsafe.length > 0 && this.userDetailsList[i].resultWarning > 0){ //unsafe and warning exist
+            this.displayUnsafe = true;
+
           }
-          else if(this.userDetailsList[i].resultWarning.length == 0){
+          else if(this.userDetailsList[i].resultWarning.length >0 && this.userDetailsList[i].resultUnsafe < 1){ //warning only exist
             this.displayWarning = true;
+
           }
-          else{
+
+          else if(this.userDetailsList[i].resultUnsafe < 1 && this.userDetailsList[i].resultWarning < 1) { //warning and unsafe does not exist
             this.displaySafe = true;
           }
         }
@@ -141,6 +141,25 @@ export class UnSafePage {
     //let warning = this.navParams.get('warnResult');
     //console.log(warning);
 
+  }
+
+  checkColor() {
+    for (var i = 0; i < this.userDetailsList.length; i++) {
+
+
+      if (this.userDetailsList[i].resultUnsafe.length > 0)
+      {
+        this.displayUnsafe = true;
+      }
+      else if(this.userDetailsList.length > 0 && this.userDetailsList.length > 0){
+        this.displayUnsafe = true;
+      }
+      else if (this.userDetailsList[i].resultWarning.length >0) {
+        this.displayWarning = true;
+      } else{
+        this.displaySafe = true;
+      }
+    }
   }
 
 }

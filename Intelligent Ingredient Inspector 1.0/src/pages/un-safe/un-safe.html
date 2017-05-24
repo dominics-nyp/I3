@@ -19,26 +19,27 @@
   <ion-list>
     <!--<ion-item *ngFor="let userDetails of userDetailsList" text-wrap>-->
     <ion-item *ngFor="let userDetails of userDetailsList; let i=index" text-wrap (click)="toggleGroup(i)" [ngClass]="{active: isGroupShown(i)}">
-      <h3>
+    <!--<div class="accordian">
+  <span class="headerLeft">-->
+       <h3 style="font-size: large">
       {{userDetails.userName}}
 
-        <ion-icon color="success" item-right [name]="isGroupShown(i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+        <ion-icon item-right [name]="isGroupShown(i) ? 'ios-remove-circle-outline' : 'ios-add-circle-outline'"></ion-icon>
+         <div [ngClass]="{'circleRed': displayUnsafe,
+                          'circleYellow': displayWarning,
+                          'circleGreen': displaySafe
+                          }">
+
+         </div>
       </h3>
+      <!--</span>
+        <div [[ngClass]="{
+        headerRightred: userDetails.resultUnsafe.length < 1,
+        headerRightyellow:userDetails.resultWarning.length <1
+        }"]>
 
+  </div>-->
 
-     <!-- <div>{{userDetails.resultUnsafe}}</div>
-      <div>{{userDetails.resultWarning}}</div>-->
-
-
- <!-- <ion-card *ngFor="let userDetails of userDetailsList">
-
-    <ion-card-header>{{userDetails.userName}}</ion-card-header>
-
-  </ion-card>-->
-
-    <!--<ion-card-content >
-      <p *ngFor="let item of data.items">{{item.name}} : {{item.value}}</p>
-    </ion-card-content>-->
 
 
       <div *ngIf="isGroupShown(i)">

@@ -24,6 +24,11 @@
 
   <ion-card-content>
 
+    <!--<ion-item>
+      <ion-label>Enable Translation</ion-label>
+      <ion-toggle [(ngModel)]="mushrooms"></ion-toggle>
+    </ion-item>-->
+
 
     <button ion-button block (click)="addPhoto()">Take
 
@@ -31,9 +36,11 @@
   picture</button>
 
     <div class="results">
-      <div *ngFor="let label of labels">
+      <div *ngFor="let label of labels; let i = index">
 
-        <h2>{{label.description}}</h2>
+        <div *ngIf="i < 1">
+          {{label.description}}
+        </div>
       </div>
 
     </div>

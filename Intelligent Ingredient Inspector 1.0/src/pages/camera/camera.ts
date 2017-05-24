@@ -40,6 +40,7 @@ export class CameraPage {
   warningResult:Array<string> = [];
   allergyUser:Array<string> = [];
   userName:Array<any> = [];
+  allergyUsers:Array<any> [];
   //userName:any;
    objUser:Array<any>=[];
 
@@ -52,36 +53,10 @@ export class CameraPage {
   scanning: Array<any> = [];
   choseLang: boolean = false;
   loading: boolean = false;
-  allergyRef:any;
-  allergyList:any;
-  loadedAllergyList:any;
+
   allergean:Array<any> = [];
   userAllergean:Array<any> = [];
   imageExist:boolean = false;
-  //objUser:Array<any> = [];
-  //testingAr:Array<any> = [];
-  userLen:any;
-
-  //userAllergyList = [];
-
-
- /* objUser = {
-    name: '',
-    //allergies: ['','',''],
-    //name:[],
-    allergies:[],
-    resultUnsafe: [],
-    resultWarning: []
-  };*/
-
- /*userAllergyList = [{
-   userName:'',
-   allergies:[],
-   resultUnsafe:[],
-   resultWarning:[]
- }];*/
-
-  userAllergyList:Array<any> = [];
 
 
 
@@ -91,13 +66,9 @@ export class CameraPage {
   //results: Array<any> = [];
   //text: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,public testService: TestService,public cameraService: CameraService,public toastCtrl: ToastController,public auth : AuthProvider,af : AngularFire) {
-    //this.imageBase64 = this.navParams.get("imageBase64");
-    //this.width = this.navParams.get("width");
-    //this.height = this.navParams.get("height");
-    //this.userAllergy = af.database.list('/intelligentingredientins-ce9a1');
-    //this.allergyRef = af.database.list('/ingredientDB');
-    //this.allergyRef = firebase.database().ref('/ingredientDB');
-    console.log(this.image);
+
+
+
     var ref = firebase.database().ref('/user/'+ firebase.auth().currentUser.uid+'/profile/');
     // ref.on('value',this.gotData,this.errData);
     ref.on('value',
@@ -106,18 +77,23 @@ export class CameraPage {
         var users = data.val();
         var keys = Object.keys(users);
         console.log(keys);
+        //this.objUser.length = 0;
+
 
         for(var y =0; y<keys.length; y++){
+          this.objUser[y] = {};
           var x = keys[y];
 
-
+          //this.objUser.length = 0;
           //var userName = users[x].name;
           //objUser[x] = {userName:'', userAllergies:[], resultWarning:[], resultUnsafe:[]}; //create object with UID
           this.objUser[y] = {userName:'', userAllergies:[], resultWarning:[], resultUnsafe:[]};  //create object without the UID
-
-
+          console.log(users[x].allergies);
+            //this.allergyUsers[x] = users[x].allergies;
           this.objUser[y].userName = users[x].name;
-          this.objUser[y].userAllergies.push(users[x].allergies);
+          //this.objUser[y].userAllergies.push(users[x].allergies);
+          this.objUser[y].userAllergies = users[x].allergies;
+          console.log('userAllergies',this.objUser[y].userAllergies);
           console.log(this.objUser[y].userAllergies.length);
 
         }
@@ -249,8 +225,8 @@ export class CameraPage {
      //var ingredients = label.description.toString().split([',','(',')']); //tokenizers
     //var ingredients = label.description.toString().split([',','(',')',' ']);
 
-    var ingredients = label.description.toString()
-      .split(/[:(,).]/igm)
+    var ingredients = label.description.toString().replace(/\n/g, " ")
+      .split(/[:(,).""]/igm)
       .map(function (ingredients){
         return ingredients.trim()
       }, {
@@ -295,11 +271,12 @@ export class CameraPage {
 
    for(var ingredientIndex=0; ingredientIndex <ingredientList.length; ingredientIndex++){
 
-     /*console.log(ingredientList);*/
+     //console.log(ingredientList);
 
-     for(var userIndex=0; userIndex<this.objUser.length; userIndex++){
+     for(var userIndex=0; userIndex<this.objUser.length; userIndex++){ //user object
        //userAllergyDetails.push(this.objUser[j].allergyUser);
         //userAllergyDetails = this.objUser[j].userAllergies;
+       //console.log('from loop objUser length',this.objUser.length);
           //len = this.objUser.length;
 
         //userAllergyDetails.push(this.objUser[j].userAllergies);
@@ -312,51 +289,36 @@ export class CameraPage {
         }*/
        for(var allergyIndex =0; allergyIndex<this.objUser[userIndex].userAllergies.length; allergyIndex++){  //matching starts
 
-
-
+        console.log('user Allergies',this.objUser[userIndex].userAllergies);
          var regexp = new RegExp(this.objUser[userIndex].userAllergies[allergyIndex], "igm");
-
+         //var regexpDanger =  new RegExp(this.objUser[userIndex].userAllergies[allergyIndex], "i")
 
          console.log(ingredientList[ingredientIndex]);
+         //ingredientList[ingredientIndex] = ingredientList[ingredientIndex].toUpperCase();
+         //this.objUser[userIndex].userAllergies[allergyIndex] = this.objUser[userIndex].userAllergies[allergyIndex].toUpperCase();
 
-
-         if(ingredientList[ingredientIndex] === this.objUser[userIndex].userAllergies[allergyIndex].toUpperCase()) {
-
+         if(ingredientList[ingredientIndex].toUpperCase() === this.objUser[userIndex].userAllergies[allergyIndex].toUpperCase()) {
+            //if(ingredientList[ingredientIndex].match(regexpDanger)){
            console.log('match');
 
            //var regexp = new RegExp(/^()(?!this.objUser[userIndex].userAllergies[allergyIndex]$).{1,}$/, "igm");
 
-
            this.objUser[userIndex].resultUnsafe.push(ingredientList[ingredientIndex]);
          }
-
 
            else if (ingredientList[ingredientIndex].match(regexp)) {
              console.log('match');
 
-
-
              this.objUser[userIndex].resultWarning.push(ingredientList[ingredientIndex]);
            }
-
-
-
-
 
          else{
            console.log('no match');
          }
-
-
-
-
-
        }
-
-
      }
-
    }
+
    console.log(unSafeResult);
     console.log('data retrieve from object',userAllergyDetails);
    console.log('length of the array',userAllergyDetails.length);
@@ -367,6 +329,9 @@ export class CameraPage {
 
  }
 
+
+
+
   backToHome():void{
     this.navCtrl.setRoot(HomePage);
   }
@@ -374,11 +339,14 @@ export class CameraPage {
     this.navCtrl.setRoot(SafePage);
   }
   ionViewDidLoad() {
-    this.counter = 0;
-    console.log(this.counter);
+
   }
-  ionViewDidEnter(){
-   this.counter = 0;
+  ionViewWillEnter(){
+      console.log('hello');
+
+   /*for(var j=0; j<this.objUser.length; j++){
+     this.objUser[j] = {userName:'',userAllergies:[], resultWarning:[], resultUnsafe:[]};
+   }*/
   }
 
 }

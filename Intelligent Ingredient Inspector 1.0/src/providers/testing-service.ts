@@ -15,7 +15,7 @@ export class TestService {
 
   apiUrls = {
     cloudVision : 'https://vision.googleapis.com/v1/images:annotate?key=',
-    //translate : 'https://www.googleapis.com/language/translate/v2?key=AIzaSyA4aIM1cmVijRq9EwTpvj81bJ6lGGdUcN0'
+    translate : 'https://www.googleapis.com/language/translate/v2?key=AIzaSyA4aIM1cmVijRq9EwTpvj81bJ6lGGdUcN0'
   };
 
 
@@ -58,6 +58,10 @@ export class TestService {
 
     return this.http.post(url, post).map( (res) => res.json());
   }
+
+ /* getTranslation(){
+
+  }*/
 
 
 
