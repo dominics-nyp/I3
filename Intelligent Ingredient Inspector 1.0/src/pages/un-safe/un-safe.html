@@ -6,8 +6,8 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>unSafe</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Results</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -25,12 +25,13 @@
       {{userDetails.userName}}
 
         <ion-icon item-right [name]="isGroupShown(i) ? 'ios-remove-circle-outline' : 'ios-add-circle-outline'"></ion-icon>
-         <div [ngClass]="{'circleRed': displayUnsafe,
-                          'circleYellow': displayWarning,
-                          'circleGreen': displaySafe
+         <div [ngClass]="{'circleRed': userDetails.resultUnsafe.length >0,
+                          'circleYellow': userDetails.resultWarning.length > 0 && userDetails.resultUnsafe.length == 0,
+                          'circleGreen': userDetails.resultUnsafe.length == 0 && userDetails.resultWarning.length == 0
                           }">
 
          </div>
+
       </h3>
       <!--</span>
         <div [[ngClass]="{

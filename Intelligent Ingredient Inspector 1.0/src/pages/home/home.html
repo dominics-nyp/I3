@@ -20,22 +20,25 @@
     </ion-item>
   </ion-row>
   <ion-list>
-    <ion-item-sliding *ngFor="let user of user | async">
+    <ion-item-sliding *ngFor="let user of user | async ">
       <ion-item>
         <p>Name: {{user.name}}</p>
-        <p>Allergies: {{user.allergies}}</p>
+        <!-- <p *ngFor="let allergies of user.allergies; let i = index">Allergies: {{user.allergies[i]}}</p>-->
+        <p>Allergies:{{user.allergies}}</p>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="secondary" (click)="editProfile(user)"></button>
-        <ion-icon name="md-create">Edit</ion-icon>
+        <button ion-button  (click)=" addAllergies(Allergies,user)"></button>
+        <ion-icon name="md-create"></ion-icon>
       </ion-item-options>
 
       <ion-item-options side="left">
-        <button ion-button color="danger" (click)="deleteProfile(user.$key)"></button>
-        <ion-icon name="md-trash">Delete</ion-icon>
+        <button ion-button color="danger"(click)="deleteProfile(user.$key)"></button>
+        <ion-icon name="md-trash">delete</ion-icon>
       </ion-item-options>
+
     </ion-item-sliding>
   </ion-list>
+
   <ion-row>
     <button (click)="camera()" ion-button block>Next</button>
   </ion-row>

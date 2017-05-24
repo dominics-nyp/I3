@@ -57,6 +57,7 @@ export class CameraPage {
   allergean:Array<any> = [];
   userAllergean:Array<any> = [];
   imageExist:boolean = false;
+  imageExistForBtn:boolean = false;
 
 
 
@@ -67,8 +68,6 @@ export class CameraPage {
   //text: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,public testService: TestService,public cameraService: CameraService,public toastCtrl: ToastController,public auth : AuthProvider,af : AngularFire) {
 
-
-
     var ref = firebase.database().ref('/user/'+ firebase.auth().currentUser.uid+'/profile/');
     // ref.on('value',this.gotData,this.errData);
     ref.on('value',
@@ -77,7 +76,6 @@ export class CameraPage {
         var users = data.val();
         var keys = Object.keys(users);
         console.log(keys);
-        //this.objUser.length = 0;
 
 
         for(var y =0; y<keys.length; y++){
@@ -147,6 +145,14 @@ export class CameraPage {
     }
 
   }
+  checkNextBtn(imageCheck: string){
+    if(imageCheck == null){
+      this.imageExistForBtn = false;
+    }
+    else{
+      this.imageExistForBtn = true;
+    }
+  }
 
 
 
@@ -190,6 +196,10 @@ export class CameraPage {
         this.labels = sub.responses[0].textAnnotations;
         //console.log(this.labels[0]);
         //this.getText();
+        for (var i=0; i<this.objUser.length; i++) {
+          this.objUser[i].resultUnsafe = [];
+          this.objUser[i].resultWarning = [];
+        }
         this.matchText(this.labels[0]);
 
         //this.testingText();
@@ -336,7 +346,7 @@ export class CameraPage {
     this.navCtrl.setRoot(HomePage);
   }
   showFlow():void{
-    this.navCtrl.setRoot(SafePage);
+    this.navCtrl.setRoot(UnSafePage);
   }
   ionViewDidLoad() {
 

@@ -47,15 +47,7 @@ export class SigninPage {
       });
     }
   }
-  remember():void{
-    this.af.auth.subscribe(user => {
-      if (user) {
-        this.navCtrl.setRoot(HomePage);
-        console.log("11");
-      } else {
-        this.navCtrl.setRoot(SigninPage);
-      }
-    });
-
+  skip():void{
+    this.navCtrl.setRoot(HomePage);
   }
 }

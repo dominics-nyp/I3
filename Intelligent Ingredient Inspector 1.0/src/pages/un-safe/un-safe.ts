@@ -13,6 +13,7 @@ import { AuthProvider } from '../../providers/auth-provider'
 @Component({
   selector: 'page-un-safe',
   templateUrl: 'un-safe.html'
+
 })
 export class UnSafePage {
 
@@ -36,9 +37,11 @@ export class UnSafePage {
   constructor(public navCtrl: NavController, public navParams: NavParams,public auth : AuthProvider,af : AngularFire) {
     //this.breakArray();
     //this.resultCardDisplay();
+    //this.testingObjects();
     this.userDetailsList = this.navParams.get('userDetails');
+    console.log(JSON.stringify(this.userDetailsList));
     console.log('resultPage',this.userDetailsList);
-    this.checkColor();
+    //this.checkColor();
 
     af.database.list('/user/'+ firebase.auth().currentUser.uid+'/profile/',{preserveSnapshot:true})
       .subscribe(snapshots =>{
@@ -143,6 +146,13 @@ export class UnSafePage {
 
   }
 
+  testingObjects(){
+      for(var i = 0; i<this.userDetailsList.length; i++){
+        console.log('testing Object',this.userDetailsList.length);
+        console.log('testing Object with index',this.userDetailsList[i].resultUnsafe);
+      }
+  }
+
   checkColor() {
     for (var i = 0; i < this.userDetailsList.length; i++) {
 
@@ -150,6 +160,7 @@ export class UnSafePage {
       if (this.userDetailsList[i].resultUnsafe.length > 0)
       {
         this.displayUnsafe = true;
+        console.log(this.displayUnsafe);
       }
       else if(this.userDetailsList.length > 0 && this.userDetailsList.length > 0){
         this.displayUnsafe = true;
