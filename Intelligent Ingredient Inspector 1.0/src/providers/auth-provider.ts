@@ -33,6 +33,7 @@ export class AuthProvider {
       });
     });
   }
+
   registerUser(credentials: any) {
     return Observable.create(observer => {
       this.af.auth.createUser(credentials).then(authData => {

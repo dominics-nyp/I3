@@ -18,11 +18,15 @@ export class HomePage {
   Allergies:FirebaseListObservable<any>;
   User: Array<{Name: string, Allergies: string,  icon: string,showUser: boolean}> = [];
 
-  constructor(public navCtrl: NavController, af: AngularFire, public ac: AlertController, public auth: AuthProvider, public mc: ModalController) {
+  constructor(
+    public navCtrl: NavController,
+    af: AngularFire,
+    public ac: AlertController,
+    public auth: AuthProvider,
+    public mc: ModalController) {
+
     this.user = af.database.list('/user/' + firebase.auth().currentUser.uid + '/profile/');
     this.Allergies=af.database.list('/ingredientDB/');
-
-
   }
 
   addProfile(): void {

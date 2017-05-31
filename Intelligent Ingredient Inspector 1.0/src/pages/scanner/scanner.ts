@@ -32,9 +32,8 @@ export class ScannerPage {
 
   }
 
-
-
   cropperLoad() {
+
     //Set your required cropperJS options as seen here https://github.com/fengyuanchen/cropperjs/blob/master/README.md#options
     this.cropper = new Cropper(this.input.nativeElement, {
       dragMode: 'crop',

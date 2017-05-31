@@ -106,9 +106,6 @@ export class CameraPage {
 
   gotData(data){
 
-
-
-
     //var users = data.val();
     var users = data.val();
     var keys = Object.keys(users);
@@ -208,32 +205,18 @@ export class CameraPage {
   }
 
  matchText(array){
-    //var count = 0;
-    //this.loadedAllergy = this.userAllergy;
-    //console.log(this.loadedAllergy);
-   //console.log(JSON.stringify(this.userAllergy));
-   //console.log('database node',this.allergyList);
-   var result = [];
-   var warningResult = [];
-   var unSafeResult = [];
-   var dataArray = [];
-   var object = {};
-   var userAllergyDetails = [];
-   var len = 0;
-   //var allergyObjUser = this.gotData(data);
 
-   //let allergy:string[] = ["OIL"];
+    var result = [];
+    var warningResult = [];
+    var unSafeResult = [];
+    var dataArray = [];
+    var object = {};
+    var userAllergyDetails = [];
+    var len = 0;
 
-   //let allergy:string[] = [this.allergyUser.toString()];
-
-      //dataArray = this.allergyList;
-      //dataArray.push(this.allergyList);
     console.log('Data from firebase',dataArray);
 
-     var label = this.labels[0];
-     //console.log(label.description.toString().split(','));
-     //var ingredients = label.description.toString().split([',','(',')']); //tokenizers
-    //var ingredients = label.description.toString().split([',','(',')',' ']);
+    var label = this.labels[0];
 
     var ingredients = label.description.toString().replace(/\n/g, " ")
       .split(/[:(,).""]/igm)
@@ -243,14 +226,6 @@ export class CameraPage {
 
       });
 
-      //var ingredientsLatest = ingredients.trim();
-      //ingredients.forEach(t => console.log(`${t} \n`))
-
-    //let ingredientList:string[] = ingredients;
-       //let ingredientSortedList:string[] = ingredientList.sort();
-       //ingredientList.push(ingredients);
-        //console.log('list',ingredientList);
-        //console.log(ingredientList.length);
 
    //trim array
    var ingredientList = ingredients.filter(function(ingredient){
