@@ -60,7 +60,9 @@ export class CameraPage {
   barcodeText: string;
   bcText: {};
   ndbnoList: Array<any> = [] ;
-
+  ndbno : string;
+  itemList :string;
+  ndbno1 : any;
   //userAllergy: any;
 
   //translation
@@ -207,14 +209,22 @@ async scanBarcode() {
     this.results = this.barcode.scan()
       .then((results) => {
         this.barcodeText = results.text;
-        this.barCodeScannerProvider.getIngredient(this.barcodeText).subscribe(data => console.log(data
-        ));
+        this.barCodeScannerProvider.getIngredient(this.barcodeText).subscribe(data => {
+          this.ndbno = data.list.item[0].ndbno
+          this.barCodeScannerProvider.getIngredientList(this.ndbno).subscribe(data => this.itemList = data.report.food.ing.desc
+         );
+        });
+        // this.barCodeScannerProvider.getIngredientList(this.ndbno).subscribe(data => this.itemList = data.report.food.ing.desc
+        // );
+        // this.barCodeScannerProvider.getIngredientList(this.ndbno1).subscribe(data => console.log(data)
+        // );
       })
       .catch((error) => {
         alert(error);
       });
 
   }
+
 
  searchBarcodeDB(barcodeText) {
 			this.barCodeScannerProvider.searchIngredient(barcodeText).subscribe(

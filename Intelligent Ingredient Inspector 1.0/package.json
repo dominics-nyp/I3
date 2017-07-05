@@ -56,7 +56,8 @@
         "typescript": "^2.0.9",
         "typescript.list": "^6.7.0",
         "vision-cloud-api": "^1.0.1",
-        "zone.js": "0.7.2"
+        "zone.js": "0.7.2",
+        "cordova-ios": "^4.4.0"
     },
     "devDependencies": {
         "@ionic/app-scripts": "^1.2.5",
@@ -94,7 +95,8 @@
             "cordova-plugin-compat": {}
         },
         "platforms": [
-            "android"
+            "android",
+            "ios"
         ]
     }
 }
