@@ -187,80 +187,12 @@ export class HomePage {
     let alert = this.ac.create();
     alert.setTitle('Allergies List');
 
+
      
 
   
 
-    alert.addInput({
-      type: 'checkbox',
-      label: 'Peanut',
-      value: 'PEANUT',
-
-    });
-
-    alert.addInput({
-      type: 'checkbox',
-      label: 'Egg',
-      value: 'EGG',
-
-    });
-
-    alert.addInput({
-      type: 'checkbox',                                                                               
-      label: 'Prawn',
-      value: 'PRAWN',
-
-    });
-
-
-    alert.addInput({
-      type: 'checkbox',
-      label: 'Sugar',
-      value: 'SUGAR',
-
-    });
-
-     alert.addInput({
-      type: 'checkbox',
-      label: 'Potato',
-      value: 'POTATO',
-
-    });
-
-    
-    
-
    
-
-
-
-    alert.addButton('Cancel');
-  
-          
-          
-    alert.addButton({
-      text: 'OK',
-      handler: data => {
-        
-       this.user.update(user.$key,{
-          allergies: data
-        
-       })
-
-         
-
-
-        console.log('Checkbox data:', data);
-        this.testCheckboxOpen = false;
-        this.testCheckboxResult = data;
-      }
-    });
-
-
-    alert.present(() =>{
-      this.testCheckboxOpen=true;
-    });
-  
 }
 
 

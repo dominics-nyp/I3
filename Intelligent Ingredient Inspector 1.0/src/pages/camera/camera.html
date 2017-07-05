@@ -30,11 +30,12 @@
     </ion-item>-->
 
 
-    <button ion-button block (click)="addPhoto()">Take
-
-
-  picture</button>
-
+    <button ion-button block (click)="addPhoto()">Take picture</button>
+    <button ion-button block (click)="scanBarcode()">Scan BarCode</button>
+    <ion-list *ngFor="let list of ndbnoList">
+      <ion-item>{{list.item["0"].ndbno}}</ion-item>
+    </ion-list>
+    
     <div class="results">
       <div *ngFor="let label of labels; let i = index">
 

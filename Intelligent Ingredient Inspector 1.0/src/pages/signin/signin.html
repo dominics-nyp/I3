@@ -4,65 +4,51 @@
       I3 Sign-in
     </ion-title>
   </ion-navbar>-->
+<div id="custom-overlay" [style.display]="splash ? 'flex': 'none'">
+  <div class="flb">
+    <div class="Aligner-item Aligner-item--top"></div>
+    <img src="assets/icon.png">
+    <div class="Aligner-item Aligner-item--bottom"></div>
+  </div>
+</div>
+
 </ion-header>
-<ion-content padding>
- <!-- <img src="https://image.ibb.co/mepkYF/icon.png" >-->
-  <h1> INTELLIGENT INGREDIENT INSPECTOR </h1>
-  <ion-card>
-    <ion-card-header>
-      LOGIN
-    </ion-card-header>
-    <ion-card-content>
-  
+<ion-content class="login-content" padding>
+  <ion-row class="logo-row">
+    <ion-col></ion-col>
+    <br>
+    <ion-col width-50>
+      <img src="assets/icon.png" alt="icon" border="0"><br /><br />
+    </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+  <div class="login-box">
   <form [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
     <ion-row>
       <ion-item>
-        <ion-label floating for ="email">Email</ion-label>
-        <ion-input type="email" value="" placeholder="" formControlName="email"></ion-input>
+        <ion-label for="email"></ion-label>
+        <ion-icon name="person"></ion-icon>
+        <ion-input type="email" value="" placeholder="Email" formControlName="email"></ion-input>
       </ion-item>
     </ion-row>
     <ion-row>
-      <ion-item>
-        <ion-label floating for="password">Password</ion-label>
-        <ion-input type="password" placeholder="" formControlName="password"></ion-input>
+      <ion-item >
+        <ion-icon name="lock"></ion-icon>
+        <ion-label for="password"></ion-label>
+        <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
       </ion-item>
+      <ion-row>
+    <a [navPush]="resetPasswordPage" class="reset" color="dark" ><b>Forget Password</b></a>
+  </ion-row>
     </ion-row>
   </form>
-  <br>
+  </div>
 
   <ion-row>
-    <button (click)="login()" ion-button color="primary" block>Log in</button>
-  </ion-row>
-  <!--  <b>OR</b>
-    <button ion-button color="primary" ion-left block>
-      <ion-icon name="logo-facebook"></ion-icon>
-      <div> Login with Facebook</div>
-    </button>
-
-     <button ion-button color="danger" ion-left block>
-      <ion-icon name="logo-google"></ion-icon>
-      <div> Login with Google</div>
-    </button> -->
-
-  <ion-row>
-    <button [navPush]="signupPage" ion-button color="primary" block>Sign up</button>
-  </ion-row>
-  <ion-row>
-  
-   <p>Forgot your password?  <a [navPush]="resetPasswordPage" color="primary" block>Reset here</a></p>
+    <button (click)="login()" class="login_btn" ion-button color="primary" block>LOG IN</button>
   </ion-row>
 
   <ion-row>
-
-  <ion-item>
-      <div *ngIf="auth.authState">
-        <button (click)="skip()" ion-button color="danger" block>skip</button>
-      </div>
-    </ion-item>
+    <button [navPush]="signupPage" class="login_btn" ion-button color="danger" block>SIGN UP</button>
   </ion-row>
-
-
-
-</ion-card-content>
-</ion-card>
 </ion-content>
