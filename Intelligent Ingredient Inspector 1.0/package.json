@@ -20,9 +20,9 @@
         "@angular/platform-browser-dynamic": "2.4.8",
         "@angular/platform-server": "2.4.8",
         "@google-cloud/vision": "^0.10.0",
-        "@ionic-native/barcode-scanner": "^3.12.1",
+        "@ionic-native/barcode-scanner": "^3.13.0",
         "@ionic-native/core": "^3.6.1",
-        "@ionic-native/native-page-transitions": "^3.12.1",
+        "@ionic-native/native-page-transitions": "^3.13.0",
         "@ionic/storage": "2.0.0",
         "@types/cropperjs": "0.0.23",
         "angularfire2": "^2.0.0-beta.8",
@@ -81,7 +81,9 @@
         "plugins": {
             "cordova-plugin-geolocation": {},
             "com.telerik.plugins.nativepagetransitions": {},
-            "phonegap-plugin-barcodescanner": {},
+            "phonegap-plugin-barcodescanner": {
+                "CAMERA_USAGE_DESCRIPTION": " "
+            },
             "cordova-plugin-camera": {},
             "cordova-plugin-console": {},
             "cordova-plugin-device": {},
