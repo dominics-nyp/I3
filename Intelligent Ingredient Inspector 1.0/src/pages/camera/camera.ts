@@ -12,11 +12,16 @@ import {UnSafePage} from '../un-safe/un-safe';
 import firebase from 'firebase';
 import {AngularFire,FirebaseListObservable} from 'angularfire2';
 import { AuthProvider } from '../../providers/auth-provider';
-
+import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
+import { BarCodeScannerProvider } from '../../providers/bar-code-scanner/bar-code-scanner';
 
 @Component({
 
-  templateUrl: 'camera.html'
+  templateUrl: 'camera.html',
+  providers: [BarCodeScannerProvider]
+
 })
 export class CameraPage {
   /* @ViewChild('image') input: ElementRef;
@@ -44,7 +49,17 @@ export class CameraPage {
   //userName:any;
    objUser:Array<any>=[];
 
-
+   //scanner
+  options: BarcodeScannerOptions;
+  results: {};
+  barcodeResult: string;
+  // static get parameters() {
+  //       return [[Http]];
+  //   };
+  ingredient: Array<any>;
+  barcodeText: string;
+  bcText: {};
+  ndbnoList: Array<any> = [] ;
 
   //userAllergy: any;
 
@@ -59,14 +74,24 @@ export class CameraPage {
   imageExist:boolean = false;
   imageExistForBtn:boolean = false;
 
-
-
   userAllergy: FirebaseListObservable<any[]>;
 
 
   //results: Array<any> = [];
   //text: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public testService: TestService,public cameraService: CameraService,public toastCtrl: ToastController,public auth : AuthProvider,af : AngularFire) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public testService: TestService,
+    public cameraService: CameraService,
+    public toastCtrl: ToastController,
+    public auth : AuthProvider,
+    af : AngularFire,
+    private barCodeScannerProvider: BarCodeScannerProvider,
+    private http:Http,
+    private barcode: BarcodeScanner,
+    // private barcodeScanner: BarcodeScanner
+    ) {
 
     var ref = firebase.database().ref('/user/'+ firebase.auth().currentUser.uid+'/profile/');
     // ref.on('value',this.gotData,this.errData);
@@ -130,7 +155,6 @@ export class CameraPage {
   }
 
   errData(){
-
   }
 
   checkImage(imageChecking: string){
@@ -156,10 +180,8 @@ export class CameraPage {
   addPhoto(){
 
 
-    this.cameraService.getImage(this.width,this.height,this.quality)
-      .subscribe( (data) => {
+    this.cameraService.getImage(this.width,this.height,this.quality).subscribe( (data) => {
           this.image = (data);
-
           //this.image = this.image.replace(/^data:image\/[a-z]+;base64,/, "");
           this.imageConvert = this.image.replace(/^data:image\/[a-z]+;base64,/, "");
           //console.log(this.image);
@@ -174,6 +196,45 @@ export class CameraPage {
         }
       );
   }
+
+  //scan bar code
+async scanBarcode() {
+
+    this.options = {
+      prompt:'Scan a barcode to see the result!'
+    };
+    //this.results = await this.barcode.scan(this.options);
+    this.results = this.barcode.scan()
+      .then((results) => {
+        this.barcodeText = results.text;
+        this.barCodeScannerProvider.getIngredient(this.barcodeText).subscribe(data => console.log(data
+        ));
+      })
+      .catch((error) => {
+        alert(error);
+      });
+
+  }
+
+ searchBarcodeDB(barcodeText) {
+			this.barCodeScannerProvider.searchIngredient(barcodeText).subscribe(
+				data => {
+					this.ingredient = data.results; 
+					console.log("Data" + data);
+				},
+				err => {
+					console.log(err);
+				},
+				() => console.log('Barcode Search Complete')
+			);
+	}
+
+  getResult(results){
+      this.results =  results.text;
+      return results;
+  }
+  //scan bar code
+
 
   toast(message: string) {
     let toast = this.toastCtrl.create({
@@ -204,6 +265,7 @@ export class CameraPage {
 
   }
 
+ 
  matchText(array){
 
     var result = [];
@@ -324,7 +386,6 @@ export class CameraPage {
     this.navCtrl.setRoot(UnSafePage);
   }
   ionViewDidLoad() {
-
   }
   ionViewWillEnter(){
       console.log('hello');

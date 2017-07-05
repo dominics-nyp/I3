@@ -15,7 +15,9 @@ import { AngularFireModule } from 'angularfire2';
 import { AuthProvider} from '../providers/auth-provider';
 import {ScannerPage} from '../pages/scanner/scanner';
 import {UnSafePage} from "../pages/un-safe/un-safe";
-
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
+import { BarCodeScannerProvider } from '../providers/bar-code-scanner/bar-code-scanner';
 
 export const firebaseConfig={
   apiKey: "AIzaSyCbC1pjcS2mcAi5SXRchAn92wyfHvmnIlI",
@@ -60,7 +62,8 @@ export const firebaseConfig={
     UnSafePage,
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthProvider
+    AuthProvider, BarcodeScanner, NativePageTransitions,
+    BarCodeScannerProvider
   ]
 })
 export class AppModule {}

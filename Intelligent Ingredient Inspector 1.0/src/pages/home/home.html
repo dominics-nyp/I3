@@ -28,13 +28,17 @@
         <p>Allergies:{{user.allergies}}</p>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button  (click)=" addAllergies(Allergies,user)"></button>
-        <ion-icon name="md-create"></ion-icon>
+        <button ion-button  (click)=" addAllergies(Allergies,user)">
+              <ion-icon name="md-create">Add</ion-icon>
+        </button>
+        
       </ion-item-options>
 
       <ion-item-options side="left">
-        <button ion-button color="danger"(click)="deleteProfile(user.$key)"></button>
-        <ion-icon name="md-trash">delete</ion-icon>
+        <button ion-button color="danger"(click)="deleteProfile(user.$key)">
+           <ion-icon name="md-trash">delete</ion-icon>
+        </button>
+       
       </ion-item-options>
 
     </ion-item-sliding>

@@ -149,7 +149,7 @@ export class HomePage {
     let alert = this.ac.create();
     alert.setTitle('Allergies List');
 
-    alert.addInput({
+  /*  alert.addInput({
       type: 'checkbox',
       label: 'Peanut',
       value: 'PEANUT',
@@ -175,6 +175,12 @@ export class HomePage {
       type: 'checkbox',
       label: 'Sugar',
       value: 'SUGAR',
+
+    });*/
+
+    alert.addInput({
+      type: 'text',
+      placeholder: 'Enter allergies'
 
     });
 
