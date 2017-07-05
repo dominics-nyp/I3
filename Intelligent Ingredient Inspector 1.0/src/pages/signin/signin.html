@@ -6,38 +6,63 @@
   </ion-navbar>-->
 </ion-header>
 <ion-content padding>
+ <!-- <img src="https://image.ibb.co/mepkYF/icon.png" >-->
+  <h1> INTELLIGENT INGREDIENT INSPECTOR </h1>
+  <ion-card>
+    <ion-card-header>
+      LOGIN
+    </ion-card-header>
+    <ion-card-content>
+  
   <form [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
     <ion-row>
       <ion-item>
-        <ion-label for="email"></ion-label>
-        <ion-input type="email" value="" placeholder="Email" formControlName="email"></ion-input>
+        <ion-label floating for ="email">Email</ion-label>
+        <ion-input type="email" value="" placeholder="" formControlName="email"></ion-input>
       </ion-item>
     </ion-row>
     <ion-row>
       <ion-item>
-        <ion-label for="password"></ion-label>
-        <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+        <ion-label floating for="password">Password</ion-label>
+        <ion-input type="password" placeholder="" formControlName="password"></ion-input>
       </ion-item>
     </ion-row>
   </form>
+  <br>
 
   <ion-row>
-    <button (click)="login()" ion-button clear>Log in</button>
+    <button (click)="login()" ion-button color="primary" block>Log in</button>
+  </ion-row>
+  <!--  <b>OR</b>
+    <button ion-button color="primary" ion-left block>
+      <ion-icon name="logo-facebook"></ion-icon>
+      <div> Login with Facebook</div>
+    </button>
+
+     <button ion-button color="danger" ion-left block>
+      <ion-icon name="logo-google"></ion-icon>
+      <div> Login with Google</div>
+    </button> -->
+
+  <ion-row>
+    <button [navPush]="signupPage" ion-button color="primary" block>Sign up</button>
+  </ion-row>
+  <ion-row>
+  
+   <p>Forgot your password?  <a [navPush]="resetPasswordPage" color="primary" block>Reset here</a></p>
   </ion-row>
 
   <ion-row>
-    <button [navPush]="signupPage" ion-button clear>Sign up</button>
-  </ion-row>
-  <ion-row>
-    <button [navPush]="resetPasswordPage" ion-button clear>Reset password</button>
-  </ion-row>
 
-  <ion-row>
-    <ion-item>
+  <ion-item>
       <div *ngIf="auth.authState">
-        <button (click)="skip()" ion-button clear>skip</button>
+        <button (click)="skip()" ion-button color="danger" block>skip</button>
       </div>
     </ion-item>
   </ion-row>
 
+
+
+</ion-card-content>
+</ion-card>
 </ion-content>

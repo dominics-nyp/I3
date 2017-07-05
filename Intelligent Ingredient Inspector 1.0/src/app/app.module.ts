@@ -15,6 +15,8 @@ import { AngularFireModule } from 'angularfire2';
 import { AuthProvider} from '../providers/auth-provider';
 import {ScannerPage} from '../pages/scanner/scanner';
 import {UnSafePage} from "../pages/un-safe/un-safe";
+import { ProfilePage } from '../pages/profile/profile';
+import { DatalistPage } from '../pages/datalist/datalist';
 
 
 export const firebaseConfig={
@@ -38,6 +40,8 @@ export const firebaseConfig={
     SigninPage,
     ScannerPage,
     UnSafePage,
+    ProfilePage,
+     DatalistPage,
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -58,6 +62,8 @@ export const firebaseConfig={
     SigninPage,
     ScannerPage,
     UnSafePage,
+    ProfilePage,
+    DatalistPage,
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider

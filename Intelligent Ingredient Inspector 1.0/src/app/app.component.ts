@@ -6,17 +6,27 @@ import {CameraService} from '../providers/camera-service';
 import {TestService} from "../providers/testing-service";
 import { SigninPage} from '../pages/signin/signin';
 import {HomePage} from "../pages/home/home";
+
+
 @Component({
   templateUrl: 'app.html',
   //providers:[CameraService],
-  providers:[CameraService,TestService]
+  providers:[CameraService,TestService],
+  
 })
+
 export class MyApp {
   rootPage = SigninPage;
+  
+
+  
   //rootPage = TabsPage;
 
+  
 
-  constructor(platform: Platform) {
+
+  constructor( platform: Platform) {
+  
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -24,4 +34,5 @@ export class MyApp {
       Splashscreen.hide();
     });
   }
+  
 }

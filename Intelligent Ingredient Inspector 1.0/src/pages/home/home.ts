@@ -5,6 +5,10 @@ import {AngularFire,FirebaseListObservable} from 'angularfire2';
 import{ SigninPage } from'../signin/signin';
 import * as firebase from 'firebase';
 import {CameraPage} from '../camera/camera';
+import { ProfilePage } from '../profile/profile';
+import { DatalistPage } from '../datalist/datalist';
+
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -13,21 +17,26 @@ import {CameraPage} from '../camera/camera';
 export class HomePage {
   testCheckboxOpen: boolean;
   testCheckboxResult;
+  
 
   user: FirebaseListObservable<any>;
   Allergies:FirebaseListObservable<any>;
   User: Array<{Name: string, Allergies: string,  icon: string,showUser: boolean}> = [];
+ 
 
   constructor(
     public navCtrl: NavController,
     af: AngularFire,
     public ac: AlertController,
     public auth: AuthProvider,
-    public mc: ModalController) {
+    public mc: ModalController,
+   ) {
 
     this.user = af.database.list('/user/' + firebase.auth().currentUser.uid + '/profile/');
     this.Allergies=af.database.list('/ingredientDB/');
+  
   }
+  
 
   addProfile(): void {
     let prompt = this.ac.create({
@@ -73,7 +82,7 @@ export class HomePage {
         },
         {
           name: 'allergies',
-          placeholder: user.allergies
+          placeholder: user.allergies 
         },
       ],
       buttons: [
@@ -140,14 +149,47 @@ export class HomePage {
     this.navCtrl.setRoot(CameraPage);
   }
 
+  profile1(): void {
+    this.navCtrl.push(ProfilePage);
+  }
+
   checklist(Allergies):void{
     console.log(Allergies.ingredient);
   }
 
 
+  addandsearch(Allergies,user):void{
+    let prompt =this.ac.create();
+    prompt.setTitle('Enter allergy');
+
+    prompt.addInput({
+      type: 'text',
+      placeholder:'Enter allergy here',
+    });
+    prompt.addButton('Cancel');
+
+    prompt.addButton({
+      text: 'Add',
+      handler: data => {
+        this.user.update(user.$key,{
+          allergies: data
+        
+        })
+      }
+    });
+    prompt.present();
+  }
+    
+  
+      
+
   addAllergies(Allergies,user):void{
     let alert = this.ac.create();
     alert.setTitle('Allergies List');
+
+     
+
+  
 
     alert.addInput({
       type: 'checkbox',
@@ -164,7 +206,7 @@ export class HomePage {
     });
 
     alert.addInput({
-      type: 'checkbox',
+      type: 'checkbox',                                                                               
       label: 'Prawn',
       value: 'PRAWN',
 
@@ -178,14 +220,36 @@ export class HomePage {
 
     });
 
+     alert.addInput({
+      type: 'checkbox',
+      label: 'Potato',
+      value: 'POTATO',
+
+    });
+
+    
+    
+
+   
+
+
 
     alert.addButton('Cancel');
+  
+          
+          
     alert.addButton({
       text: 'OK',
       handler: data => {
-        this.user.update(user.$key,{
+        
+       this.user.update(user.$key,{
           allergies: data
-        })
+        
+       })
+
+         
+
+
         console.log('Checkbox data:', data);
         this.testCheckboxOpen = false;
         this.testCheckboxResult = data;
@@ -196,5 +260,16 @@ export class HomePage {
     alert.present(() =>{
       this.testCheckboxOpen=true;
     });
-  }
+  
+}
+
+
+ 
+  
+      
+  
+
+    
+    
+
 }

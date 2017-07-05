@@ -1,4 +1,22 @@
 page-signin {
+    .scroll-content{
+        text-align: center;
+    }
+    
+       ion-card.card{
+            background: rgba(232, 230,230, 0.6px );
+            border-radius: 10px;
+        }
 
+        .item{
+             background: rgba(232, 230,230, 0px );
+        }
+            
+        
+       h1{
+            font-family: 'Gill Sans', 'Gill Sans MT', Calbri, 'Trebuchet MS', sans-serif;
+            font-weight: lighter;
+        }
+    
 }
 

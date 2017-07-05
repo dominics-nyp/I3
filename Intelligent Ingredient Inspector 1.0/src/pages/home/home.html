@@ -3,11 +3,11 @@
     <ion-title>
       Allergies List
     </ion-title>
-    <ion-buttons end>
+   <!-- <ion-buttons end>
       <button ion-button icon-only (click)="addProfile()">
         <ion-icon name="add"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons>-->
   </ion-navbar>
 </ion-header>
 
@@ -22,20 +22,34 @@
   </ion-row>
   <ion-list>
     <ion-item-sliding *ngFor="let user of user | async ">
-      <ion-item>
+ 
+    <ion-item (click)="profile1()" detail-push>
+ 
         <p>Name: {{user.name}}</p>
         <!-- <p *ngFor="let allergies of user.allergies; let i = index">Allergies: {{user.allergies[i]}}</p>-->
         <p>Allergies:{{user.allergies}}</p>
+        
       </ion-item>
-      <ion-item-options side="right">
-        <button ion-button  (click)=" addAllergies(Allergies,user)"></button>
-        <ion-icon name="md-create"></ion-icon>
+  
+   <!--   <ion-item-options side="right">
+        <button ion-button  (click)=" addAllergies(Allergies,user)">
+
+          
+          <ion-icon name="md-create">Select</ion-icon>
+           
+        </button>
+        <button ion-button color="secondary" (click)=" addandsearch(Allergies,user)">
+          <ion-icon name="add-circle">Add & Search</ion-icon>
+        </button>
+        
       </ion-item-options>
 
       <ion-item-options side="left">
-        <button ion-button color="danger"(click)="deleteProfile(user.$key)"></button>
-        <ion-icon name="md-trash">delete</ion-icon>
-      </ion-item-options>
+        <button ion-button color="danger"(click)="deleteProfile(user.$key)">
+          <ion-icon name="md-trash">delete</ion-icon>
+          </button>
+        
+      </ion-item-options>-->
 
     </ion-item-sliding>
   </ion-list>
@@ -47,3 +61,5 @@
     <button (click)="logout()" ion-button block>Log out</button>
   </ion-row>
 </ion-content>
+
+
