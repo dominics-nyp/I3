@@ -21,13 +21,14 @@
         "@angular/platform-server": "2.4.8",
         "@google-cloud/vision": "^0.10.0",
         "@ionic-native/barcode-scanner": "^3.13.0",
-        "@ionic-native/core": "^3.6.1",
-        "@ionic-native/native-page-transitions": "^3.13.0",
+        "@ionic-native/core": "^3.13.1",
+        "@ionic-native/native-page-transitions": "^3.13.1",
         "@ionic/storage": "2.0.0",
         "@types/cropperjs": "0.0.23",
         "angularfire2": "^2.0.0-beta.8",
         "com.telerik.plugins.nativepagetransitions": "^0.6.5",
         "cordova-android": "^6.2.3",
+        "cordova-ios": "^4.4.0",
         "cordova-plugin-camera": "^2.4.1",
         "cordova-plugin-compat": "^1.1.0",
         "cordova-plugin-console": "^1.0.5",
@@ -94,7 +95,8 @@
             "cordova-plugin-compat": {}
         },
         "platforms": [
-            "android"
+            "android",
+            "ios"
         ]
     }
 }
