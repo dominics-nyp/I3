@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http,Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {ScannerPage} from '../pages/scanner/scanner';
+import {translate} from 'google.cloud';
 
 @Injectable()
 export class TestService {
@@ -10,12 +11,16 @@ export class TestService {
 
   apiKeys = {
     cloudVision :'AIzaSyA4aIM1cmVijRq9EwTpvj81bJ6lGGdUcN0',
+    translate :'AIzaSyA4aIM1cmVijRq9EwTpvj81bJ6lGGdUcN0'
     //scanner:  'AIzaSyA4aIM1cmVijRq9EwTpvj81bJ6lGGdUcN0'
   };
 
   apiUrls = {
-    cloudVision : 'https://vision.googleapis.com/v1/images:annotate?key=',
-    translate : 'https://www.googleapis.com/language/translate/v2?key=AIzaSyA4aIM1cmVijRq9EwTpvj81bJ6lGGdUcN0'
+    cloudVision : 'https://vision.googleapis.com/v1/images:annotate?key='
+  };
+
+  apiUrl = {
+    translate : 'https://www.googleapis.com/language/translate/v2?key='
   };
 
 
@@ -59,9 +64,16 @@ export class TestService {
     return this.http.post(url, post).map( (res) => res.json());
   }
 
- /* getTranslation(){
+  
 
-  }*/
+  getTranslation(image : string){
+
+    let url = this.apiUrl.translate + this.apiKeys.translate;
+    let post = this.visionPostObj;
+    post.requests[0].image.content = image;
+    return this.http.post(url, post).map( (res) => res.json());
+    
+  }
 
 
 

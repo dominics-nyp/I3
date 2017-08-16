@@ -23,7 +23,7 @@ export class BarCodeScannerProvider {
   }
 
   searchIngredient(ingredient) {
-      var url ='https://api.nal.usda.gov/ndb/search/?format=json&name=' + encodeURI(ingredient) +'&sort=n&max=1&offset=0&api_key=Lw3sQQ3O75bfX5TSpnSO2ZR8W0hHOp729WO2UnKx';
+      var url ='https://api.nal.usda.gov/ndb/search/?format=json&q=' + encodeURI(ingredient) +'&sort=n&max=1&offset=0&api_key=Lw3sQQ3O75bfX5TSpnSO2ZR8W0hHOp729WO2UnKx';
       
       console.log("URL: " + url);
       var response = this.http.get(url).map(res => res.json());
@@ -32,7 +32,7 @@ export class BarCodeScannerProvider {
     }
 
     getIngredient(ingredient){
-       return this.http.get('https://api.nal.usda.gov/ndb/search/?format=json&name=' + encodeURI(ingredient) +'&sort=n&max=1&offset=0&api_key=Lw3sQQ3O75bfX5TSpnSO2ZR8W0hHOp729WO2UnKx')
+       return this.http.get('https://api.nal.usda.gov/ndb/search/?format=json&q=' + encodeURI(ingredient) +'&sort=n&max=1&offset=0&api_key=Lw3sQQ3O75bfX5TSpnSO2ZR8W0hHOp729WO2UnKx')
       .map(this.extractData)
       .do(this.logResponse)
       .catch(this.catchError);

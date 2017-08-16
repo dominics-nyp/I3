@@ -6,12 +6,13 @@ import {CameraService} from '../providers/camera-service';
 import {TestService} from "../providers/testing-service";
 import { SigninPage} from '../pages/signin/signin';
 import {HomePage} from "../pages/home/home";
+import {TranslationService} from "../providers/translation.service";
 
 
 @Component({
   templateUrl: 'app.html',
   //providers:[CameraService],
-  providers:[CameraService,TestService],
+  providers:[CameraService,TestService,TranslationService],
   
 })
 
