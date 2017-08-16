@@ -16,7 +16,7 @@ export class BarCodeScannerProvider {
         return [[Http]];
     }
 
-    nbNumber : string;
+    nbNumber : any;
 
   constructor(public http: Http) {
     
@@ -32,11 +32,19 @@ export class BarCodeScannerProvider {
     }
 
     getIngredient(ingredient){
-      return this.http.get('https://api.nal.usda.gov/ndb/search/?format=json&name=' + encodeURI(ingredient) +'&sort=n&max=1&offset=0&api_key=Lw3sQQ3O75bfX5TSpnSO2ZR8W0hHOp729WO2UnKx')
+       return this.http.get('https://api.nal.usda.gov/ndb/search/?format=json&name=' + encodeURI(ingredient) +'&sort=n&max=1&offset=0&api_key=Lw3sQQ3O75bfX5TSpnSO2ZR8W0hHOp729WO2UnKx')
       .map(this.extractData)
       .do(this.logResponse)
-      .catch(this.catchError)
+      .catch(this.catchError);
+      
   }
+
+    getIngredientList(ingredient){
+      return this.http.get('https://api.nal.usda.gov/ndb/reports/?ndbno='+encodeURI(ingredient)+'&type=f&format=json&api_key=Lw3sQQ3O75bfX5TSpnSO2ZR8W0hHOp729WO2UnKx')
+      .map(this.extractData)
+      .do(this.logResponse)
+      .catch(this.catchError);
+    }
 
   private catchError(error: Response | any){
     console.log(error);

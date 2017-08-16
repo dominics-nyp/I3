@@ -41,8 +41,7 @@
     <!--  ngIf checked is true display a certain style  -->
 
 <ion-label>{{allergy.allergies}} </ion-label> 
-<ion-toggle (ionChange)="togglechecked(allergy)" 
- [(ngModel)]="allergy.checked" color="secondary"></ion-toggle>
+<ion-toggle [(ngModel)]="allergy.checked" color="secondary"></ion-toggle> 
   
   </ion-item>
 

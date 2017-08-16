@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController , AlertController, ModalController, NavParams} from 'ionic-angular';
+import { NavController, AlertController, ModalController, NavParams } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth-provider';
-import {AngularFire,FirebaseListObservable} from 'angularfire2';
-import{ SigninPage } from'../signin/signin';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { SigninPage } from '../signin/signin';
 import * as firebase from 'firebase';
-import {CameraPage} from '../camera/camera';
+import { CameraPage } from '../camera/camera';
 import { ProfilePage } from '../profile/profile';
 import { HomePage } from '../home/home';
 
@@ -20,29 +20,26 @@ import { HomePage } from '../home/home';
 })
 
 
-
 export class DatalistPage {
 
 
-searchQuery:string='';
-allergy:any;
+  searchQuery: string = '';
+  allergy: any;
 
 
+  public user: any;
+  public Allergies: FirebaseListObservable<any>;
 
 
  
- public user: FirebaseListObservable<any>;
- public Allergies:FirebaseListObservable<any>;
-
- 
-
-public Allergies1:Array<{allergies: string, checked: boolean}>;//array contains a list of objects. Each object needs to have a allergy:xx and checked: true/false
-public user1;
-public profile1:Array<{allergies: string, checked: boolean}>=[];
+  public Allergies1: Array<{ allergies: string, checked: boolean }>;//array contains a list of objects. Each object needs to have a allergy:xx and checked: true/false
+  public user1;
+  public profile1: Array<{ allergies: string, checked: boolean }> = [];
+  public id;
 
 
- User: Array<{Name: string, Allergies: string,  icon: string,showUser: boolean}> = [];
- 
+  User: Array<{ Name: string, Allergies: string, icon: string, showUser: boolean }> = [];
+
 
 
   constructor(
@@ -50,146 +47,121 @@ public profile1:Array<{allergies: string, checked: boolean}>=[];
     public af: AngularFire,
     public navParams: NavParams) {
 
-    this.user = af.database.list('/user/' + firebase.auth().currentUser.uid + '/profile/' + '/allergies');
-    this.Allergies = af.database.list('/ingredientDB/');
-    
-    
 
-    // console.log("navParams: " + navParams.get("profile"));
-    this.user1= navParams.get("user");
-    this.profile1= navParams.get("profile");
+    this.id = navParams.get("id");
+    this.user;
 
 
-    af.database.list('/ingredientDB/', { preserveSnapshot: true})
-    .subscribe(snapshots=>{
-
-      //profile1 = user's allergies
-      
-        snapshots.forEach(snapshot => {
-        
-     // this.Allergies1 = [];
-
-         console.log(snapshot.key, snapshot.val());
-    //  console.log("allergies :"+ this.profile1);
-         
-       
-    //      //push allergies into Allergies1
-    //      if(this.profile1 == snapshot.val().allergies)
-    //   {
-    //        snapshot.val().checked == true;
-          
-    //      //  console.log("checked is true");
-
-    //        //push allergies to allergies; turn toggle to true
-    //       this.Allergies1.push({
-    //       allergies: snapshot.val().allergies,
-    //        checked: true
-           
-    //       });
-
-        
-    //  }
-
-    //      else
-    //  {
-    //    //    console.log("checked is false");
-    //         this.Allergies1.push({
-    //       allergies: snapshot.val().allergies,
-    //        checked: false
-    //       });
-    //  }
+    af.database.list('/user/' + firebase.auth().currentUser.uid + '/profile/' + this.id + '/allergies/', { preserveSnapshot: true })
+      .subscribe((snapshots) => {
+        this.user = snapshots;
 
 
-console.log("this.profile : " + JSON.stringify(this.profile1));
-    this.profile1.forEach(element => {
- this.Allergies1 = [];
-     let flag:boolean =false;
-         
+        this.Allergies = af.database.list('/ingredientDB/');
 
-        if(element == snapshot.val().allergies)
-        {
-            
-           snapshot.val().checked == true;
+        this.user1 = navParams.get("user");
+        this.profile1 = navParams.get("profile");
+        console.log("ID: " + (this.id));
 
-           this.Allergies1.push({
-           allergies: snapshot.val().allergies,
-           checked: true
-           
+        af.database.list('/ingredientDB/', { preserveSnapshot: true })
+          .subscribe(snapshots => {
+            //profile1 = user's allergies
+            this.Allergies1 = [];
+            let flag: boolean = false;
+
+            snapshots.forEach(snapshot => {
+              flag = false;
+
+              this.user.forEach(element => {
+                // console.log("element:" + element.val());
+                // console.log("allergies: " + snapshot.val().allergies);
+
+                if (element.val() == snapshot.val().allergies) {
+                  console.log("in");
+                  flag = true;
+                  console.log("into flag");
+                }
+              });
+
+              console.log("Flag: " + flag);
+              this.Allergies1.push({
+                allergies: snapshot.val().allergies,
+                checked: flag
+              });
+
+            });
+
           });
-
-//set the flag to true
-      flag=true;
-      console.log("flag: " + JSON.stringify(flag));
-
-        }
-
- //check the flag and push the Allergies1 if the flag is false 
-        else {
-              // flag =false;
-           snapshot.val().checked == false;
-          //   console.log("hello");
-          this.Allergies1.push({
-            allergies: snapshot.val().allergies,
-            checked: false
-          });
-         console.log("flag: " + JSON.stringify(flag));
-        }
+      });
+  }
 
 
+
+
+  addchecked( ) {
+
+    //get user from class variable
+    this.user1;
+    //get profile from class variable
+    this.profile1;
+
+    //loop through this.user { call .remove for all allergies}
+
+    this.user.forEach(y => {
+//remove
+      this.af.database.list('/user/' + firebase.auth().currentUser.uid + '/profile/' + this.id + '/allergies/', { preserveSnapshot: true }).remove(y.allergies);
+
+    })
+
+
+
+    var newallergies = [];
+
+    //get Allergies1 from class variable
+    this.Allergies1.forEach(x => {
+      if (x.checked == true) {
+        // console.log("hi");
+        // console.log(x.allergies);
+
+        newallergies.push(
+         x.allergies
+        );
+
+      }
     });
-
-        
-
-    
-        }
-      
-
-      
-    
+console.log("newallergies: " + JSON.stringify(newallergies));
+//do update of firebase withnewallergies
      
-
-    );
-
-    
-    
-    });
-
-   
-    }
   
-
-
-  addchecked(allergy):void{
-  
-  //get user from class variable
-  this.user1;
-  //get profile from class variable
-  this.profile1;
-  //get Allergies1 from class variable
-
-  //write Allergies1 to Firebase
-  
-
-}
-
-
-
-      initializeItems();
-
-        initializeItems(): void{
-
-          this.allergy = [this.af.database.list('/ingredientDB/')];
-  
-  
-    
-  
+ newallergies.forEach(a => {
+      this.af.database.list('/user/' + firebase.auth().currentUser.uid + '/profile/' + this.id + '/allergies/', { preserveSnapshot: true }).push(a);
+ });
  
-}
+ 
 
 
-  
+this.navCtrl.pop(ProfilePage);
 
-getItems(ev: any) {
+  }
+
+
+
+  initializeItems();
+
+  initializeItems(): void {
+
+    this.allergy = this.af.database.list('/ingredientDB/');
+
+
+
+
+
+  }
+
+
+
+
+  getItems(ev: any) {
     // Reset items back to all of the items
     this.initializeItems();
 
@@ -199,17 +171,13 @@ getItems(ev: any) {
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
       this.allergy = this.allergy.filter((allergies) => {
-       return (allergies.toString().toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (allergies.toString().toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
-   }
+    }
   }
-    
 
-togglechecked(allergy){
-  // this.Allergies.update(allergy.$key, {checked: allergy.checked})
+
  
-
-}
 
 
 
@@ -218,12 +186,12 @@ togglechecked(allergy){
     console.log('ionViewDidLoad DatalistPage');
   }
 
-  
-  backtodatalist():void {
+
+  backtodatalist(): void {
     this.navCtrl.push(ProfilePage);
   }
 
-  
+
 
 
 }

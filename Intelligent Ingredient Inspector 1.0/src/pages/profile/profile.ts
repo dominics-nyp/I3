@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController , AlertController, ModalController, NavParams} from 'ionic-angular';
-import {HomePage} from "../home/home";
-import {AngularFire,FirebaseListObservable} from 'angularfire2';
+import { NavController, AlertController, ModalController, NavParams } from 'ionic-angular';
+import { HomePage } from "../home/home";
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import { AuthProvider } from '../../providers/auth-provider';
 import * as firebase from 'firebase';
-import {CameraPage} from '../camera/camera';
-import{ SigninPage } from'../signin/signin';
+import { CameraPage } from '../camera/camera';
+import { SigninPage } from '../signin/signin';
 import { DatalistPage } from '../datalist/datalist';
 
 
@@ -21,15 +21,15 @@ import { DatalistPage } from '../datalist/datalist';
 })
 export class ProfilePage {
 
-   testCheckboxOpen: boolean;
+  testCheckboxOpen: boolean;
   testCheckboxResult;
 
- 
 
+  user1: FirebaseListObservable<any>;
   user: FirebaseListObservable<any>;
-  Allergies:FirebaseListObservable<any>;
-  User: Array<{Name: string, Allergies: string,  icon: string,showUser: boolean}> = [];
- 
+  Allergies: FirebaseListObservable<any>;
+  User: Array<{ Name: string, Allergies: string, id: string }> = [];
+
 
   constructor(
     public navCtrl: NavController,
@@ -37,28 +37,67 @@ export class ProfilePage {
     public ac: AlertController,
     public auth: AuthProvider,
     public mc: ModalController,
-    
-   ) {
+
+  ) {
 
     this.user = af.database.list('/user/' + firebase.auth().currentUser.uid + '/profile/');
-    this.Allergies=af.database.list('/ingredientDB/');
-  
+    this.Allergies = af.database.list('/ingredientDB/');
+
+    console.log("user.allergies:" + JSON.stringify(this.user[0]));
+    
+    af.database.list('/user/' + firebase.auth().currentUser.uid + '/profile', { preserveSnapshot: true })
+      .subscribe(snapshots => {
+      this.User=[];
+        // console.log("snapshots: " +JSON.stringify(snapshots));
+        snapshots.forEach(snapshot => {
+
+          console.log("snapshot :" + JSON.stringify(snapshot.getKey()));
+
+          var al = "";
+          for (var key in snapshot.val().allergies) {
+            console.log(snapshot.val().allergies[key]);
+            al = snapshot.val().allergies[key] + " " + al;
+          }
+
+          this.User.push
+            ({
+              Allergies: al,
+              Name: snapshot.val().name,
+              id: snapshot.getKey()
+            });
+
+          // snapshot.val().allergies.forEach(element => {
+          //   console.log("elment: " +element);
+          // });
+
+        });
+
+      });
+
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePage');
   }
 
-  backtoprofile():void{
+  backtoprofile(): void {
     this.navCtrl.push(HomePage);
   }
-  datalist(user, profile): void{
-    this.navCtrl.push(DatalistPage, {user: user.name, profile: user.allergies});
+
+
+
+
+  datalist(user, profile, id): void {
+    console.log("id: " + id);
+    this.navCtrl.push(DatalistPage, { user: user.Name, profile: user.Allergies, id: id });
+    // this.navCtrl.push(DatalistPage, {id:snapshot.getKey()});
+
   }
 
 
 
-     addProfile(): void {
+  addProfile(): void {
     let prompt = this.ac.create({
       title: 'New profile',
       message: 'Enter name',
@@ -93,7 +132,7 @@ export class ProfilePage {
 
 
 
-    deleteProfile(userID): void {
+  deleteProfile(userID): void {
     console.log('delete clicked');
     let prompt = this.ac.create({
       title: 'Delete profile?',
@@ -116,37 +155,37 @@ export class ProfilePage {
     prompt.present();
   }
 
-addnew():void{
-  let prom =this.ac.create({
-    title: 'Add new allergy',
-    message: 'Enter allergy name',
-    inputs: [
-      {
-        name: 'allergies',
-        placeholder: 'Allergy name'
-      }
+  addnew(): void {
+    let prom = this.ac.create({
+      title: 'Add new allergy',
+      message: 'Enter allergy name',
+      inputs: [
+        {
+          name: 'allergies',
+          placeholder: 'Allergy name'
+        }
 
-    ],
-    buttons: [
-      {
-        text: "cancel",
-        handler: data=> {
-          console.log("cancel clicked");
+      ],
+      buttons: [
+        {
+          text: "cancel",
+          handler: data => {
+            console.log("cancel clicked");
+          }
+        },
+        {
+          text: "Add",
+          handler: data => {
+            this.Allergies.push({
+              allergies: data.allergies
+              
+            })
+          }
         }
-      },
-      {
-        text: "Add",
-        handler:data =>{
-          this.Allergies.push({
-           allergies: data.allergies,
-           checked: true
-          })
-        }
-      }
-    ]
-  })
-  prom.present();
-}
+      ]
+    })
+    prom.present();
+  }
 
   /* addAllergies(Allergies,user):void{
     let alert = this.ac.create();

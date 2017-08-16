@@ -34,22 +34,22 @@
 
 <ion-content padding>
    
-<ion-item side ="right" *ngFor="let user of user | async ">
-        <p>Name: {{user.name}}</p>
-         <p>Allergies:{{user.allergies }}</p>
+<ion-item side ="right" *ngFor="let user of User ">
+        <p>Name: {{user.Name}}</p>
+         <p>Allergies:{{user.Allergies }}</p>
          
            
    <!-- </ion-item>
 
     <ion-item side="right">-->
-        <button ion-button item-right (click)="datalist(user, profile)">
+        <button ion-button item-right (click)="datalist(user, profile, user.id)">
 
           
           <ion-icon name="md-create">Edit</ion-icon>
            
         </button>
 
-        <button ion-button item-right color="danger"(click)="deleteProfile(user.$key)">
+        <button ion-button item-right color="danger"(click)="deleteProfile(user.id)">
           <ion-icon name="md-trash">delete</ion-icon>
           </button>
     </ion-item>

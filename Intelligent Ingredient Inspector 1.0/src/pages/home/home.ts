@@ -18,7 +18,7 @@ export class HomePage {
   testCheckboxOpen: boolean;
   testCheckboxResult;
   
-
+  public pCode:any;
   user: FirebaseListObservable<any>;
   Allergies:FirebaseListObservable<any>;
   User: Array<{Name: string, Allergies: string,  icon: string,showUser: boolean}> = [];
@@ -26,16 +26,21 @@ export class HomePage {
 
   constructor(
     public navCtrl: NavController,
-    af: AngularFire,
+    public af: AngularFire,
     public ac: AlertController,
     public auth: AuthProvider,
     public mc: ModalController,
    ) {
 
+
+
     this.user = af.database.list('/user/' + firebase.auth().currentUser.uid + '/profile/');
-    this.Allergies=af.database.list('/ingredientDB/');
-  
-  }
+    this.Allergies=af.database.list('/ingredientDB/'); 
+    
+
+    
+   
+   }
   
 
   addProfile(): void {

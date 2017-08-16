@@ -29,16 +29,14 @@
  
         <p>Name: {{user.name}}</p>
         <!-- <p *ngFor="let allergies of user.allergies; let i = index">Allergies: {{user.allergies[i]}}</p>-->
-        <p>Allergies:{{user.allergies}}</p>
+        
         
       </ion-item>
 
     </ion-item-sliding>
   </ion-list>
 
-  <ion-row>
-    <button (click)="camera()" ion-button block>Next</button>
-  </ion-row>
+ 
   <ion-row>
     <button (click)="logout()" ion-button block>Log out</button>
   </ion-row>
