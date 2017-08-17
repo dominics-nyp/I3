@@ -131,7 +131,18 @@ export class CameraPage {
           //this.allergyUsers[x] = users[x].allergies;
           this.objUser[y].userName = users[x].name;
           //this.objUser[y].userAllergies.push(users[x].allergies);
-          this.objUser[y].userAllergies = users[x].allergies;
+          
+          var allergiesArray = [];
+          var allergiesKeys = Object.keys(users[x].allergies);
+          for (var z = 0; z < allergiesKeys.length; z++) {
+            allergiesArray.push(users[x].allergies[allergiesKeys[z]]);
+          }
+          
+          this.objUser[y].userAllergies = allergiesArray;//users[x].allergies;
+          
+
+
+
           console.log('userAllergies', this.objUser[y].userAllergies);
           console.log(this.objUser[y].userAllergies.length);
 
@@ -447,7 +458,7 @@ export class CameraPage {
         // this.labels = labels.description.toString().replace(this.translate(this.labels[0].description));
 
         this.translate(this.labels[0].description);
-
+        console.log(this.translatedText+ "translted text")
         //this.testingText();
       });
 
